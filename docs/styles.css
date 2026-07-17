@@ -1,0 +1,750 @@
+/* ===== IMPORTACIÓN DE FUENTES ===== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* ===== VARIABLES CSS ===== */
+:root {
+  --primary-blue: #1e3a8a;
+  --secondary-blue: #3b82f6;
+  --light-blue: #dbeafe;
+  --accent-blue: #60a5fa;
+  --white: #ffffff;
+  --light-gray: #f8fafc;
+  --dark-gray: #334155;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  
+  --font-family-primary: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-heading: 'Georgia', 'Times New Roman', serif;
+}
+
+/* ===== CONFIGURACIÓN GLOBAL ===== */
+.reveal {
+  font-family: var(--font-family-primary);
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--white) 0%, var(--light-blue) 100%);
+}
+
+.reveal .slides {
+  padding-top: 90px; /* Espacio para header */
+  padding-bottom: 70px; /* Espacio para footer */
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.reveal .slides section {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  padding: 1rem 2rem; /* Padding base para slides */
+}
+
+/* ===== ESTILOS PARA PORTADA INICIAL ===== */
+.reveal .slides > section:first-of-type {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(219, 234, 254, 0.95) 100%);
+  padding: 2rem 2rem !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.reveal .slides > section:first-of-type .portada-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3.5rem 3.5rem;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 12px;
+  box-shadow: 0 12px 48px rgba(30, 58, 138, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+}
+
+.reveal .slides > section:first-of-type .portada-logo {
+  font-size: 0.85rem;
+  color: var(--secondary-blue);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-family: var(--font-family-primary);
+  margin-bottom: 0.5rem;
+}
+
+.reveal .slides > section:first-of-type .portada-institution {
+  font-size: 2.8rem;
+  font-family: var(--font-family-heading);
+  color: var(--primary-blue);
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.reveal .slides > section:first-of-type .portada-school {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  text-align: center;
+  font-family: var(--font-family-primary);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+.reveal .slides > section:first-of-type .portada-divider {
+  width: 70px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--secondary-blue), var(--accent-blue));
+  border-radius: 2px;
+  margin: 0.5rem 0;
+}
+
+.reveal .slides > section:first-of-type .portada-title {
+  font-size: 2.2rem;
+  font-family: var(--font-family-heading);
+  color: var(--primary-blue);
+  text-align: center;
+  line-height: 1.4;
+  font-weight: 700;
+  margin: 0.8rem 0 0 0;
+}
+
+.reveal .slides > section:first-of-type .portada-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  text-align: center;
+  font-family: var(--font-family-primary);
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0.8rem 0 0 0;
+}
+
+.reveal .slides > section:first-of-type .portada-author {
+  width: 100%;
+  margin: 1rem 0 0 0;
+  padding: 1.2rem 0 0 0;
+  border-top: 1px solid rgba(59, 130, 246, 0.2);
+  text-align: center;
+}
+
+.reveal .slides > section:first-of-type .portada-author-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-family: var(--font-family-primary);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.reveal .slides > section:first-of-type .portada-author-name {
+  font-size: 1.4rem;
+  font-family: var(--font-family-heading);
+  color: var(--primary-blue);
+  font-weight: 700;
+  margin: 0;
+}
+
+.reveal .slides > section:first-of-type .portada-location {
+  width: 100%;
+  margin: 1rem 0 0 0;
+  padding: 1.2rem 0 0 0;
+  border-top: 1px solid rgba(59, 130, 246, 0.2);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.reveal .slides > section:first-of-type .portada-location-text {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  font-family: var(--font-family-primary);
+  font-weight: 500;
+  margin: 0;
+}
+
+.reveal .slides > section:first-of-type .portada-date {
+  font-size: 1.3rem;
+  font-family: var(--font-family-heading);
+  color: var(--primary-blue);
+  font-weight: 700;
+  margin: 0;
+}
+
+/* NUEVA REGLA: Para iframes en slides simples (Slides 1-3)
+  Esto les da un tamaño flexible por defecto.
+  IMPORTANTE: No usar !important en width/height para permitir atributos inline
+*/
+.reveal .slides section > iframe {
+  border: none;
+  display: block;
+  margin-top: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(78, 90, 125, 0.1);
+}
+
+/* Aplicar defaults solo si no hay atributos inline */
+.reveal .slides section > iframe:not([width]):not([height]) {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: calc(100vh - 220px);
+}
+
+
+/* ===== HEADER ===== */
+.reveal::before {
+  content: 'Universidad Modelo • Tesis';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45px;
+  background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+  color: var(--primary-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(30, 58, 138, 0.2);
+}
+
+/* Logo en la esquina izquierda del header */
+.reveal::before {
+  background-image: url('images/modelo.png');
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  background-size: 35px 35px;
+  padding-left: 50px;
+}
+
+
+/* ===== FOOTER ===== */
+.reveal::after {
+  content: 'Fecha 27-01-2026';
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 35px;
+  background: var(--primary-blue);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  z-index: 1000;
+}
+
+/* ===== TÍTULOS Y TEXTOS ===== */
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: var(--font-family-heading);
+  color: var(--primary-blue);
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  width: 100%; /* Asegura que el título no rompa el flex */
+  flex-shrink: 0; /* No encoger el título */
+}
+
+.reveal h2 {
+  font-size: 2.2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.reveal p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 1.3rem;
+  text-align: justify;
+}
+
+.reveal strong {
+  color: var(--primary-blue);
+  font-weight: 600;
+  font-size: 1.2rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.reveal ul {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.reveal li {
+  margin-bottom: 0.8rem;
+  padding-left: 0.5rem;
+}
+
+/* ===== LAYOUT DE COLUMNAS ===== */
+.reveal .columns {
+  display: flex;
+  gap: 1.5rem;
+  align-items: stretch;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+  flex-grow: 1; /* Las columnas ocupan el espacio */
+}
+
+.reveal .column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+/* Estilos genéricos para columnas */
+.reveal .columns .column {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.08);
+  border-left: 4px solid var(--secondary-blue);
+}
+
+/* REGLA MODIFICADA: Controla el iframe DENTRO de una columna
+   Sin !important para permitir atributos inline
+*/
+.reveal .columns .column iframe {
+  border: none;
+  border-radius: 8px;
+  aspect-ratio: auto;
+}
+
+/* Aplicar defaults solo si no hay atributos inline */
+.reveal .columns .column iframe:not([width]):not([height]) {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 350px;
+}
+
+/* Estilos para texto en columnas */
+.reveal .columns .column strong {
+  font-size: 1.2rem;
+  color: var(--primary-blue);
+  margin-bottom: 1rem;
+}
+
+.reveal .columns .column p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.reveal .columns .column ul {
+  margin-top: 1rem;
+  padding-left: 1rem;
+}
+
+.reveal .columns .column li {
+  position: relative;
+  list-style: none;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.reveal .columns .column li::before {
+  content: '▶';
+  position: absolute;
+  left: 0;
+  color: var(--secondary-blue);
+  font-weight: 600;
+}
+
+/* ===== LAYOUT VERTICAL (Texto arriba/abajo del gráfico) ===== */
+/* REGLA MODIFICADA */
+.reveal .layout-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  width: 100%;
+  flex-grow: 1; /* El layout ocupa todo el espacio vertical */
+}
+
+/* REGLA MODIFICADA */
+.reveal .layout-vertical .graphic-block {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.1);
+  border: 1px solid var(--light-blue);
+  flex-grow: 1; /* El bloque del gráfico crece para llenar espacio */
+  display: flex; /* Para que el iframe hijo crezca */
+}
+
+/* REGLA NUEVA */
+.reveal .layout-vertical .graphic-block iframe {
+  border: none;
+  border-radius: 8px;
+}
+
+/* Aplicar defaults solo si no hay atributos inline */
+.reveal .layout-vertical .graphic-block iframe:not([width]):not([height]) {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 350px;
+}
+
+/* REGLA MODIFICADA */
+.reveal .layout-vertical .text-block {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 1.5rem; /* Padding reducido */
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.08);
+  border-left: 4px solid var(--secondary-blue);
+  flex-shrink: 0; /* El bloque de texto no se encoge */
+}
+
+.reveal .layout-vertical .text-block strong {
+  font-size: 1.3rem;
+  color: var(--primary-blue);
+  margin-bottom: 1rem;
+  text-align: justify;
+}
+
+.reveal .layout-vertical .text-block p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Orden inverso para texto abajo */
+.reveal .layout-vertical.text-bottom {
+  flex-direction: column-reverse;
+}
+
+/* ===== LAYOUT MÚLTIPLES GRÁFICOS ===== */
+.reveal .layout-multi-graphics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+  width: 100%;
+  flex-grow: 1; /* Ocupa espacio */
+}
+
+.reveal .layout-multi-graphics .graphic-item {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.1);
+  border: 1px solid var(--light-blue);
+  display: flex;
+  flex-direction: column;
+  min-height: 400px; /* Reducida altura mínima */
+}
+
+/* REGLA MODIFICADA */
+.reveal .layout-multi-graphics .graphic-item iframe {
+  border: none;
+  border-radius: 8px;
+}
+
+/* Aplicar defaults solo si no hay atributos inline */
+.reveal .layout-multi-graphics .graphic-item iframe:not([width]):not([height]) {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 300px;
+}
+
+.reveal .layout-multi-graphics .graphic-item .caption {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  text-align: center;
+  font-weight: 500;
+  color: var(--primary-blue);
+  flex-shrink: 0;
+}
+
+/* ===== LAYOUT 2x1 (Dos gráficos arriba, texto abajo) ===== */
+/* REGLA MODIFICADA */
+.reveal .layout-2-1 {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  width: 100%;
+  flex-grow: 1; /* Ocupa espacio */
+  justify-content: center;
+}
+
+.reveal .layout-2-1 .graphics-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.reveal .layout-2-1 .graphics-row .graphic-item {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.1);
+  border: 1px solid var(--light-blue);
+}
+
+/* REGLA NUEVA */
+.reveal .layout-2-1 .graphics-row .graphic-item iframe {
+  border: none;
+  border-radius: 8px;
+}
+
+/* Aplicar defaults solo si no hay atributos inline */
+.reveal .layout-2-1 .graphics-row .graphic-item iframe:not([width]):not([height]) {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 300px;
+}
+
+.reveal .layout-2-1 .text-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.08);
+  border-left: 4px solid var(--secondary-blue);
+  flex-shrink: 0; /* No encoger */
+}
+
+.reveal .layout-2-1 .text-content strong {
+  font-size: 1.3rem;
+  color: var(--primary-blue);
+  margin-bottom: 1rem;
+}
+
+.reveal .layout-2-1 .text-content p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* ===== ESTILOS PARA SLIDES SIN COLUMNAS ===== */
+.reveal .slide-content {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.05);
+  margin-top: 2rem;
+}
+
+/* ===== AJUSTES PARA REVEALJS ===== */
+.reveal .slide {
+  background: transparent !important;
+}
+
+.reveal .progress {
+  color: var(--secondary-blue) !important;
+  height: 4px !important;
+}
+
+.reveal .controls {
+  color: var(--primary-blue) !important;
+  bottom: 70px !important;
+}
+
+.reveal .slide-number {
+  background: var(--primary-blue) !important;
+  color: var(--white) !important;
+  border-radius: 6px !important;
+  padding: 6px 12px !important;
+  bottom: 70px !important;
+  font-size: 0.9rem !important;
+}
+
+/* ===== DISEÑO RESPONSIVO ===== */
+@media (max-width: 1200px) {
+  .reveal .columns {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .reveal .layout-multi-graphics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .reveal h2 {
+    font-size: 1.8rem;
+  }
+  
+  .reveal p {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .reveal::before {
+    height: 60px;
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .reveal::after {
+    height: 45px;
+    font-size: 0.8rem;
+  }
+  
+  .reveal .slides {
+    padding-top: 70px;
+    padding-bottom: 55px;
+  }
+  
+  .reveal .columns {
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  /* REGLA MODIFICADA: Ajuste responsivo de iframes en columnas */
+  .reveal .columns .column iframe {
+    min-height: 300px;
+  }
+  
+  .reveal .columns .column:first-child {
+    height: auto; /* Dejar que el iframe defina la altura */
+    padding: 1rem;
+  }
+  
+  .reveal .columns .column:first-child iframe:not([width]):not([height]) {
+    height: 300px; /* Altura fija para móvil */
+  }
+  
+  .reveal .columns .column:last-child {
+    padding: 1.5rem;
+  }
+
+  /* REGLAS NUEVAS: Ajuste responsivo para layouts */
+  .reveal .layout-multi-graphics {
+    grid-template-columns: 1fr; /* Una columna en móvil */
+  }
+
+  .reveal .layout-2-1 .graphics-row {
+    grid-template-columns: 1fr; /* Una columna en móvil */
+  }
+
+  .reveal .layout-2-1 .graphics-row .graphic-item iframe:not([width]):not([height]) {
+    height: 300px; /* Altura ajustada para móvil */
+  }
+  
+  .reveal h2 {
+    font-size: 1.5rem;
+  }
+  
+  .reveal p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .reveal strong {
+    font-size: 1.1rem;
+  }
+  
+  .reveal .controls {
+    bottom: 55px !important;
+  }
+  
+  .reveal .slide-number {
+    bottom: 55px !important;
+  }
+}
+
+
+.reveal .column:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(30, 58, 138, 0.15);
+}
+
+/* ===== ELEMENTOS DECORATIVOS ===== */
+.reveal .slides section::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+  opacity: 0.1;
+  z-index: -1;
+  border-radius: 50%;
+}
+
+/* ===== CLASES AUXILIARES PARA AJUSTAR TAMAÑOS DE IFRAMES DESDE .QMD ===== */
+
+/* Contenedor wrapper para iframes con control de tamaño */
+.iframe-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+/* Tamaños predefinidos: PEQUEÑO */
+.iframe-sm iframe,
+.iframe-container.sm iframe {
+  min-height: 250px !important;
+}
+
+/* Tamaños predefinidos: MEDIANO (default) */
+.iframe-md iframe,
+.iframe-container.md iframe {
+  min-height: 350px !important;
+}
+
+/* Tamaños predefinidos: GRANDE */
+.iframe-lg iframe,
+.iframe-container.lg iframe {
+  min-height: 450px !important;
+}
+
+/* Tamaños predefinidos: EXTRA GRANDE */
+.iframe-xl iframe,
+.iframe-container.xl iframe {
+  min-height: 600px !important;
+}
+
+/* Tamaños personalizados por altura (ej: .iframe-h300 para 300px) */
+.reveal [class*="iframe-h"] iframe {
+  min-height: inherit !important;
+}
+
+/* Control de ancho (overflow effect) */
+.iframe-overflow iframe {
+  width: 150% !important;
+  margin-left: -25% !important;
+}
+
+.iframe-overflow-2x iframe {
+  width: 190% !important;
+  margin-left: -45% !important;
+}
+
+/* Centro perfecto */
+.iframe-centered {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.iframe-centered iframe {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.reveal .slides section .fragment.blur {
+  filter: blur(5px);
+}
+
+.reveal .slides section .fragment.blur.visible {
+  filter: none
+}
