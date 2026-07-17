@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline - Sistema Político Mexicano</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/highcharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/timeline.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/treemap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/treegraph.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/exporting.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/accessibility.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Roboto, Helvetica, Arial, sans-serif;
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .highcharts-figure {
+            min-width: 320px;
+            max-width: 100%;
+            margin: 1em auto;
+            background: #ffffff;
+            padding: 2rem;
+        }
+
+        .highcharts-description {
+            margin: 0.3rem 10px;
+            color: #000000;
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+
+        #container {
+            background: #ffffff;
+            margin-bottom: 2rem;
+        }
+
+        #treegraph-container {
+            background: #ffffff;
+            min-height: 550px;
+            max-width: 100%;
+            margin: 2rem auto;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+
+        #treegraph-container.active {
+            display: block;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #2caffe;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 1rem;
+        }
+
+        .back-button:hover {
+            background: #1a8cd8;
+        }
+
+        /* Tooltip */
+        .highcharts-tooltip,
+        .highcharts-tooltip > span {
+            background: #ffffff !important;
+            color: #000000 !important;
+            border: 1px solid #cccccc !important;
+        }
+
+        /* Textos */
+        .highcharts-label text,
+        .highcharts-text,
+        .highcharts-title,
+        .highcharts-subtitle {
+            fill: #000000 !important;
+            color: #000000 !important;
+            text-shadow: none !important;
+        }
+
+        /* Icono hamburguesa visible y gris */
+        .highcharts-contextbutton .highcharts-button-symbol {
+            stroke: #666666 !important;
+            fill: none !important;
+        }
+
+        /* Fondo del botón de menú */
+        .highcharts-contextbutton {
+            fill: #ffffff !important;
+            stroke: #cccccc !important;
+        }
+
+        .highcharts-contextbutton:hover {
+            fill: #f0f0f0 !important;
+        }
+
+        /* Menú de exportación */
+        .highcharts-button {
+            background: #ffffff !important;
+            color: #000000 !important;
+            border: 1px solid #cccccc !important;
+        }
+
+        .highcharts-button:hover {
+            background: #f0f0f0 !important;
+        }
+
+        .highcharts-menu {
+            background: #ffffff !important;
+            border: 1px solid #cccccc !important;
+        }
+
+        .highcharts-menu-item {
+            background: #ffffff !important;
+            color: #000000 !important;
+        }
+
+        .highcharts-menu-item:hover {
+            background: #f0f0f0 !important;
+        }
+
+        /* Globos flotantes blancos */
+        .highcharts-label-box {
+            fill: #ffffff !important;
+            stroke: #cccccc !important;
+        }
+
+        .highcharts-label text {
+            fill: #000000 !important;
+        }
+
+        /* Cursor pointer para indicar que es clickeable */
+        .highcharts-point {
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+        La línea del tiempo categoriza las transformaciones de las estructuras, 
+        los procesos y los contenidos del sistema político mexicano desde su 
+        fundación en el siglo XVI con el Virreinato de la Nueva España hasta la actualidad.
+        <strong>Haz clic en cualquier periodo para ver su estructura detallada.</strong>
+    </p>
+</figure>
+
+<div id="treegraph-container">
+    <button class="back-button" onclick="hideTreegraph()">← Volver al Timeline</button>
+    <div id="treegraph"></div>
+</div>
+
+<script>
+// Datos para cada periodo
+const treegraphData = {
+    fundacion: [
+        {
+            id: '0.0',
+            parent: '',
+            name: 'XVI: Fundación'
+        },
+        {
+            id: '1.1',
+            parent: '0.0',
+            name: 'Democracia'
+        },
+        {
+            id: '1.2',
+            parent: '0.0',
+            name: 'Partitocracia'
+        },
+        // Democracia - Institucionales
+        {
+            id: '2.1',
+            parent: '1.1',
+            name: 'Institucionales'
+        },
+        {
+            id: '3.1',
+            parent: '2.1',
+            name: 'Igualdad de oportunidades'
+        },
+        {
+            id: '3.2',
+            parent: '2.1',
+            name: 'Control de los temas'
+        },
+        {
+            id: '3.3',
+            parent: '2.1',
+            name: 'Limitación de abuso de poder'
+        },
+        {
+            id: '3.4',
+            parent: '2.1',
+            name: 'Legitimidad de los representantes'
+        },
+        // Democracia - No Institucionales
+        {
+            id: '2.2',
+            parent: '1.1',
+            name: 'No Institucionales'
+        },
+        {
+            id: '3.4',
+            parent: '2.2',
+            name: 'Búsqueda no violenta del poder'
+        },
+        {
+            id: '3.5',
+            parent: '2.2',
+            name: 'Pluralidad'
+        },
+        {
+            id: '3.6',
+            parent: '2.2',
+            name: 'Derechos humanos'
+        },
+        {
+            id: '3.7',
+            parent: '2.2',
+            name: 'Tolerancia'
+        },
+        {
+            id: '3.8',
+            parent: '2.2',
+            name: 'Racionalidad'
+        },
+        {
+            id: '3.9',
+            parent: '2.2',
+            name: 'Paz social'
+        },
+        {
+            id: '3.10',
+            parent: '2.2',
+            name: 'Interés colectivo'
+        },
+        // Partitocracia - Institucionales
+        {
+            id: '2.3',
+            parent: '1.2',
+            name: 'Institucionales'
+        },
+        {
+            id: '3.7',
+            parent: '2.3',
+            name: 'Ampliación y perpetuación de poder'
+        },
+        // Partitocracia - No Institucionales
+        {
+            id: '2.4',
+            parent: '1.2',
+            name: 'No Institucionales'
+        },
+        {
+            id: '3.10',
+            parent: '2.4',
+            name: 'Reducción de la libertad'
+        },
+        {
+            id: '3.11',
+            parent: '2.4',
+            name: 'Corrupción'
+        }
+    ],
+    independencia: [
+        {
+            id: '0.0',
+            parent: '',
+            name: 'XIX: Independencia'
+        },
+        {
+            id: '1.1',
+            parent: '0.0',
+            name: 'Democracia'
+        },
+        {
+            id: '1.2',
+            parent: '0.0',
+            name: 'Partitocracia'
+        },
+        // Democracia - Institucionales
+        {
+            id: '2.1',
+            parent: '1.1',
+            name: 'Institucionales'
+        },
+        {
+            id: '3.1',
+            parent: '2.1',
+            name: 'Respaldo a las reglas de la democracia'
+        },
+        {
+            id: '3.2',
+            parent: '2.1',
+            name: 'Legitimidad de los representantes'
+        },
+        // Democracia - No Institucionales
+        {
+            id: '2.2',
+            parent: '1.1',
+            name: 'No Institucionales'
+        },
+        {
+            id: '3.4',
+            parent: '2.2',
+            name: 'Búsqueda no violenta del poder'
+        },
+        // Partitocracia - Institucionales
+        {
+            id: '2.3',
+            parent: '1.2',
+            name: 'Institucionales'
+        },
+        {
+            id: '3.7',
+            parent: '2.3',
+            name: 'Poder electoral y administrativo'
+        },
+        {
+            id: '3.8',
+            parent: '2.3',
+            name: 'Concentración de poder en el Ejecutivo'
+        },
+        {
+            id: '3.9',
+            parent: '2.3',
+            name: 'Ampliación y perpetuación de poder'
+        },
+        // Partitocracia - No Institucionales
+        {
+            id: '2.4',
+            parent: '1.2',
+            name: 'No Institucionales'
+        },
+        {
+            id: '3.10',
+            parent: '2.4',
+            name: 'Reducción de la libertad'
+        },
+        {
+            id: '3.11',
+            parent: '2.4',
+            name: 'Sobordinación a las élites'
+        },
+        {
+            id: '3.12',
+            parent: '2.4',
+            name: 'Decisiones de las élites partidistas'
+        },
+        {
+            id: '3.13',
+            parent: '2.4',
+            name: 'Insatisfacción con la democracia'
+        },
+        {
+            id: '3.14',
+            parent: '2.4',
+            name: 'Corrupción'
+        }
+    ],
+    posrevolucion: [
+        {
+            id: '0.0',
+            parent: '',
+            name: 'Posrevolución'
+        },
+        {
+            id: '1.1',
+            parent: '0.0',
+            name: 'Democracia'
+        },
+        {
+            id: '1.2',
+            parent: '0.0',
+            name: 'Partitocracia'
+        },
+        // Democracia - Institucionales
+        {
+            id: '2.1',
+            parent: '1.1',
+            name: 'Institucionales'
+        },
+        {
+            id: '3.1',
+            parent: '2.1',
+            name: 'Respaldo a las reglas de la democracia'
+        },
+        {
+            id: '3.2',
+            parent: '2.1',
+            name: 'Legitimidad de los representantes'
+        },
+        // Democracia - No Institucionales
+        {
+            id: '2.2',
+            parent: '1.1',
+            name: 'No Institucionales'
+        },
+        {
+            id: '3.4',
+            parent: '2.2',
+            name: 'Búsqueda no violenta del poder'
+        },
+        // Partitocracia - Institucionales
+        {
+            id: '2.3',
+            parent: '1.2',
+            name: 'Institucionales'
+        },
+        {
+            id: '3.7',
+            parent: '2.3',
+            name: 'Poder electoral y administrativo'
+        },
+        {
+            id: '3.8',
+            parent: '2.3',
+            name: 'Concentración de poder en el Ejecutivo'
+        },
+        {
+            id: '3.9',
+            parent: '2.3',
+            name: 'Ampliación y perpetuación de poder'
+        },
+        // Partitocracia - No Institucionales
+        {
+            id: '2.4',
+            parent: '1.2',
+            name: 'No Institucionales'
+        },
+        {
+            id: '3.10',
+            parent: '2.4',
+            name: 'Reducción de la libertad'
+        },
+        {
+            id: '3.11',
+            parent: '2.4',
+            name: 'Sobordinación a las élites'
+        },
+        {
+            id: '3.12',
+            parent: '2.4',
+            name: 'Decisiones de las élites partidistas'
+        },
+        {
+            id: '3.13',
+            parent: '2.4',
+            name: 'Insatisfacción con la democracia'
+        },
+        {
+            id: '3.14',
+            parent: '2.4',
+            name: 'Corrupción'
+        }
+    ]
+};
+
+let timelineChart;
+let treegraphChart;
+
+// Crear timeline inicial
+function createTimeline() {
+    timelineChart = Highcharts.chart('container', {
+        chart: {
+            type: 'timeline',
+            backgroundColor: '#ffffff'
+        },
+
+        xAxis: {
+            visible: false
+        },
+        yAxis: {
+            visible: false
+        },
+
+        title: {
+            text: 'Evolución del Sistema Político Mexicano',
+            style: {
+                color: '#000000',
+                fontSize: '24px'
+            }
+        },
+
+        subtitle: {
+            text: 'S. XVI - S. XXI',
+            style: {
+                color: '#000000'
+            }
+        },
+
+        colors: ['#3b82f6','#10b981','#f59e0b'],
+
+        series: [{
+            data: [
+                {
+                    name: 'XVI: Fundación',
+                    description: 'Fundación del sistema político mexicano hasta el final del Imperio Español <br> en América en el siglo XIX',
+                    dataKey: 'fundacion'
+                },
+                {
+                    name: 'XIX: Independencia',
+                    description: 'Transformación del sistema político mexicano en los primeros años de independencia entre 1821 y 1876',
+                    dataKey: 'independencia'
+                },
+                {
+                    name: 'Posrevolución',
+                    description: 'Consolidación del sistema político moderno en México s. XX - s. XXI',
+                    dataKey: 'posrevolucion'
+                }
+            ],
+            point: {
+                events: {
+                    click: function() {
+                        showTreegraph(this.options.dataKey);
+                    }
+                }
+            }
+        }],
+
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}',
+                    style: {
+                        color: '#000000',
+                        textOutline: 'none'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Mostrar treegraph
+function showTreegraph(periodKey) {
+    document.getElementById('treegraph-container').classList.add('active');
+    document.querySelector('.highcharts-figure').style.display = 'none';
+    
+    const data = treegraphData[periodKey];
+    
+    treegraphChart = Highcharts.chart('treegraph', {
+        chart: {
+            backgroundColor: '#ffffff'
+        },
+        // ----------------------------------------------------
+        // AQUÍ ESTÁ EL CAMBIO DE PALETA DE COLORES
+        // Azul claro para Democracia, Naranja para Partitocracia
+        // ----------------------------------------------------
+        colors: ['#2caffe', '#f59e0b', '#10b981', '#7cb5ec'],
+        
+        title: {
+            text: 'Estructura del Sistema Político - ' + data[0].name,
+            style: {
+                color: '#000000'
+            }
+        },
+        series: [
+            {
+                type: 'treegraph',
+                data: data,
+                tooltip: {
+                    pointFormat: '{point.name}'
+                },
+                marker: {
+                    symbol: 'rect',
+                    width: '15%'
+                },
+                borderRadius: 10,
+                link: {
+                    type: 'curved',
+                    lineWidth: 1
+                },
+                dataLabels: {
+                    pointFormat: '{point.name}',
+                    style: {
+                        whiteSpace: 'nowrap',
+                        color: '#000000',
+                        textOutline: 'none'
+                    }
+                },
+                levels: [
+                    {
+                        level: 1,
+                        levelIsConstant: false
+                    },
+                    {
+                        level: 2,
+                        colorByPoint: true
+                    },
+                    {
+                        level: 3,
+                        colorVariation: {
+                            key: 'brightness',
+                            to: -0.3
+                        }
+                    },
+                    {
+                        level: 4,
+                        colorVariation: {
+                            key: 'brightness',
+                            to: 0.3
+                        }
+                    }
+                ]
+            }
+        ]
+    });
+}
+
+// Ocultar treegraph y volver al timeline
+function hideTreegraph() {
+    document.getElementById('treegraph-container').classList.remove('active');
+    document.querySelector('.highcharts-figure').style.display = 'block';
+    if (treegraphChart) {
+        treegraphChart.destroy();
+    }
+}
+
+// Inicializar timeline al cargar la página
+window.addEventListener('DOMContentLoaded', createTimeline);
+</script>
+
+</body>
+</html>

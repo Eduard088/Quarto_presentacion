@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrera de Financiamiento de Partidos (México)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/highcharts.js"></script>
+    <style>
+        @import url("https://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #ffff;
+            color: #333;
+        }
+
+        .highcharts-figure {
+            max-width: 1000px;
+            margin: 1em auto;
+        }
+
+        #play-controls {
+            margin: 1em auto;
+            max-width: 1000px;
+            display: flex;
+            align-items: center;
+        }
+
+        #container {
+            height: 600px;
+            margin: 0 auto;
+            background: white;
+        }
+
+        #play-pause-button {
+            margin-right: 15px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            background-color: #0275ff;
+            font-size: 18px;
+            transition: background-color 250ms;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #play-pause-button:hover {
+            background-color: #0056b3;
+        }
+
+        #play-range {
+            flex-grow: 1;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <figure class="highcharts-figure">
+        <div id="parent-container">
+            <div id="play-controls">
+                <button id="play-pause-button" class="fa fa-play" title="Reproducir"></button>
+                <input id="play-range" type="range" value="2014" min="2014" max="2023" />
+            </div>
+            <div id="container"></div>
+        </div>
+    </figure>
+
+    <script>
+        const startYear = 2014,
+            endYear = 2023,
+            btn = document.getElementById('play-pause-button'),
+            input = document.getElementById('play-range'),
+            nbr = 11; // Número de barras a mostrar
+
+        let dataset, chart;
+
+
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: ','   // <-- evita “10.000”, “11.000”, etc.
+            }
+        });
+
+        // Mapeo de colores oficiales (aprox) de los partidos
+        const partyColors = {
+            "MORENA": "#B22222", // Guinda/Rojo oscuro
+            "PAN": "#0055A5",    // Azul
+            "PRI": "#E21818",    // Rojo
+            "PRD": "#FFD700",    // Amarillo
+            "PVEM": "#50C878",   // Verde
+            "MC": "#FF8C00",     // Naranja
+            "PT": "#FF0000"      // Rojo brillante
+        };
+
+        /*
+         * Animación de etiquetas (DataLabels) con Regex para formateo numérico
+         */
+        (function (H) {
+            const FLOAT = /^-?\d+\.?\d*$/;
+
+            H.Fx.prototype.textSetter = function () {
+                const chart = H.charts[this.elem.renderer.chartIndex];
+                let thousandsSep = chart.numberFormatter('1000.0')[1];
+
+                if (/[0-9]/.test(thousandsSep)) {
+                    thousandsSep = ' ';
+                }
+
+                const replaceRegEx = new RegExp(thousandsSep, 'g');
+                let startValue = this.start.replace(replaceRegEx, ''),
+                    endValue = this.end.replace(replaceRegEx, ''),
+                    currentValue = this.end.replace(replaceRegEx, '');
+
+                if ((startValue || '').match(FLOAT)) {
+                    startValue = parseInt(startValue, 10);
+                    endValue = parseInt(endValue, 10);
+
+                    currentValue = chart.numberFormatter(
+                        Math.round(startValue + (endValue - startValue) * this.pos),
+                        0
+                    );
+                }
+
+                this.elem.endText = this.end;
+                this.elem.attr(this.prop, currentValue, null, true);
+            };
+
+            H.SVGElement.prototype.textGetter = function () {
+                const ct = this.text.element.textContent || '';
+                return this.endText ? this.endText : ct.substring(0, ct.length / 2);
+            };
+
+            H.wrap(H.Series.prototype, 'drawDataLabels', function (proceed) {
+                const attr = H.SVGElement.prototype.attr,
+                    chart = this.chart;
+
+                if (chart.sequenceTimer) {
+                    this.points.forEach(point =>
+                        (point.dataLabels || []).forEach(
+                            label =>
+                                (label.attr = function (hash) {
+                                    if (hash && hash.text !== undefined && chart.isResizing === 0) {
+                                        const text = hash.text;
+                                        delete hash.text;
+                                        return this.attr(hash).animate({ text });
+                                    }
+                                    return attr.apply(this, arguments);
+                                })
+                        )
+                    );
+                }
+
+                const ret = proceed.apply(this, Array.prototype.slice.call(arguments, 1));
+                this.points.forEach(p =>
+                    (p.dataLabels || []).forEach(d => (d.attr = attr))
+                );
+                return ret;
+            });
+        }(Highcharts));
+
+        /**
+         * Obtiene los datos del año y los ordena de mayor a menor.
+         * Asigna colores específicos a cada partido.
+         */
+        function getData(year) {
+            const output = Object.entries(dataset)
+                .map(entry => {
+                    const [partyName, partyData] = entry;
+                    return {
+                        name: partyName,
+                        y: Number(partyData[year]),
+                        color: partyColors[partyName] || null // Asigna color si existe en el mapa
+                    };
+                })
+                .sort((a, b) => b.y - a.y);
+            
+            return output.slice(0, nbr);
+        }
+
+        /**
+         * Calcula el subtítulo con el Total Anual
+         */
+        function getSubtitle() {
+            const data = getData(input.value);
+            // Sumar el total de financiamiento de todos los partidos mostrados
+            const totalFunding = data.reduce((acc, curr) => acc + curr.y, 0);
+            
+            // Convertir a millones para visualización limpia
+            const formattedTotal = (totalFunding / 1000000).toFixed(1); 
+
+            return `<span style="font-size: 80px; font-weight: bold; color: #ccc;">${input.value}</span><br>
+                <span style="font-size: 22px; color: #666;">
+                    Total Erogado: <b>$${formattedTotal}</b> Millones MXN
+                </span>`;
+        }
+
+        (async () => {
+            try {
+                // Carga el JSON local
+                const response = await fetch('./financiamiento.json');
+                dataset = await response.json();
+            } catch (error) {
+                console.error("Error cargando el JSON. Asegúrate de correr esto en un servidor local.", error);
+                // Fallback para demo si falla la carga local
+                alert("Error cargando 'financiamiento.json'. Revisa la consola.");
+                return;
+            }
+
+            chart = Highcharts.chart('container', {
+                chart: {
+                    animation: { duration: 2500 },
+                    marginRight: 50,
+                    style: { fontFamily: 'Roboto, sans-serif' }
+                },
+                title: {
+                    text: 'Financiamiento Público a Partidos Políticos en México (2014-2024)',
+                    align: 'left'
+                },
+                subtitle: {
+                    text: getSubtitle(),
+                    floating: true,
+                    align: 'right',
+                    verticalAlign: 'bottom',
+                    useHTML: true,
+                    y: -20,
+                    x: -20
+                },
+                legend: { enabled: false },
+                xAxis: { type: 'category' },
+                yAxis: {
+                    opposite: true,
+                    tickPixelInterval: 150,
+                    title: { text: null },
+                    labels: {
+                        formatter: function() {
+                            // Formato abreviado para el eje Y (Millones)
+                            return '$' + (this.value / 1000000).toFixed(0) + 'M';
+                        }
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        animation: false,
+                        groupPadding: 0,
+                        pointPadding: 0.1,
+                        borderWidth: 0,
+                        dataSorting: {
+                            enabled: true,
+                            matchByName: true
+                        },
+                        type: 'bar',
+                        dataLabels: { enabled: true }
+                    }
+                },
+                series: [{
+                    type: 'bar',
+                    name: startYear.toString(),
+                    data: getData(startYear)
+                }],
+                responsive: {
+                    rules: [{
+                        condition: { maxWidth: 550 },
+                        chartOptions: {
+                            xAxis: { visible: false },
+                            subtitle: { x: 0 },
+                            plotOptions: {
+                                series: {
+                                    dataLabels: [{
+                                        enabled: true,
+                                        y: 8
+                                    }, {
+                                        enabled: true,
+                                        format: '{point.name}',
+                                        y: -8,
+                                        style: {
+                                            fontWeight: 'normal',
+                                            opacity: 0.7
+                                        }
+                                    }]
+                                }
+                            }
+                        }
+                    }]
+                }
+            });
+        })();
+
+        // Funcionalidad de Play/Pause y Update
+        function pause(button) {
+            button.title = 'Reproducir';
+            button.className = 'fa fa-play';
+            clearTimeout(chart.sequenceTimer);
+            chart.sequenceTimer = undefined;
+        }
+
+        function update(increment) {
+            if (increment) {
+                input.value = parseInt(input.value, 10) + increment;
+            }
+            if (input.value >= endYear) {
+                pause(btn);
+            }
+
+            chart.update({
+                subtitle: { text: getSubtitle() }
+            }, false, false, false);
+
+            chart.series[0].update({
+                name: input.value,
+                data: getData(input.value)
+            });
+        }
+
+        function play(button) {
+            button.title = 'Pausar';
+            button.className = 'fa fa-pause';
+            chart.sequenceTimer = setInterval(function () {
+                update(1);
+            }, 700); // 700ms por año para apreciar mejor el cambio
+        }
+
+        btn.addEventListener('click', function () {
+            if (chart.sequenceTimer) {
+                pause(this);
+            } else {
+                play(this);
+            }
+        });
+
+        input.addEventListener('input', function () {
+            update();
+        });
+    </script>
+</body>
+</html>

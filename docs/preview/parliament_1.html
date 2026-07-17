@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Composición del Parlamento</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/highcharts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/item-series.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/exporting.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/export-data.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/accessibility.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #ffffff; color: #1a1a2e;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 2rem 1rem 3rem;
+    }
+    .chart-header { text-align: center; margin-bottom: 1.6rem; max-width: 780px; }
+    .chart-header h1 { font-size: clamp(1.15rem, 3vw, 1.6rem); font-weight: 700; letter-spacing: -0.02em; color: #0d1b2a; }
+    .chart-header p  { font-size: 0.83rem; color: #6b7280; margin-top: 0.3rem; }
+    .year-buttons { display: flex; justify-content: center; margin-bottom: 1.3rem; }
+    .year-buttons button {
+      cursor: pointer; border: 1.5px solid #d1d5db; border-right-width: 0;
+      background: #f9fafb; color: #374151; font-size: 0.88rem; font-weight: 500;
+      padding: 0.42rem 1.25rem; transition: background .2s, color .2s; outline: none;
+    }
+    .year-buttons button:first-child { border-radius: 6px 0 0 6px; }
+    .year-buttons button:last-child  { border-radius: 0 6px 6px 0; border-right-width: 1.5px; }
+    .year-buttons button:hover:not(.active) { background: #e5e7eb; }
+    .year-buttons button.active { background: #1c3f6e; color: #fff; border-color: #1c3f6e; }
+    .formula-toggle { display: flex; justify-content: center; gap: .7rem; margin-bottom: .4rem; flex-wrap: wrap; }
+    .formula-toggle button {
+      cursor: pointer; border: 1.5px solid #d1d5db; background: #f9fafb;
+      color: #374151; font-size: 0.8rem; font-weight: 600; padding: .38rem 1.1rem;
+      border-radius: 20px; transition: all .22s; outline: none; letter-spacing:.01em;
+    }
+    .formula-toggle button:hover:not(.active) { background: #e5e7eb; }
+    .formula-toggle button.active { background: #1c3f6e; color: #fff; border-color: #1c3f6e; box-shadow: 0 2px 8px rgba(28,63,110,.18); }
+    .formula-desc { text-align: center; font-size: .77rem; color: #6b7280; margin-bottom: .2rem; min-height: 1.1em; }
+    #container { width: 100%; max-width: 820px; height: 450px; }
+    .editor-toggle { margin-top: .5rem; text-align: center; }
+    .editor-toggle button {
+      cursor: pointer; background: none; border: 1.5px solid #d1d5db; border-radius: 6px;
+      color: #6b7280; font-size: .77rem; padding: .28rem .85rem; transition: all .2s;
+    }
+    .editor-toggle button:hover { background: #f3f4f6; color: #374151; }
+    .party-editor { display: none; margin-top: 1rem; max-width: 820px; width: 100%; background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 1.1rem 1.3rem; }
+    .party-editor.open { display: block; }
+    .party-editor h3 { font-size: .82rem; font-weight: 700; color: #374151; margin-bottom: .85rem; text-transform: uppercase; letter-spacing: .05em; }
+    .party-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .6rem; }
+    .party-row { display: flex; align-items: center; gap: .45rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 7px; padding: .38rem .6rem; }
+    .party-row input[type="color"] { width: 26px; height: 26px; border: none; border-radius: 5px; cursor: pointer; padding: 0; flex-shrink: 0; }
+    .party-row input[type="text"] { border: none; outline: none; font-size: .8rem; font-weight: 600; color: #1a1a2e; background: transparent; flex: 1; min-width: 0; }
+    .party-row .sigla-input { border: none; outline: none; font-size: .75rem; font-weight: 700; color: #9ca3af; background: transparent; width: 32px; text-align: center; text-transform: uppercase; }
+    .editor-apply { margin-top: .9rem; display: flex; justify-content: flex-end; }
+    .editor-apply button { cursor: pointer; background: #1c3f6e; color: #fff; border: none; border-radius: 7px; padding: .42rem 1.2rem; font-size: .8rem; font-weight: 600; transition: background .2s; }
+    .editor-apply button:hover { background: #163260; }
+  </style>
+</head>
+<body>
+
+<div class="year-buttons">
+  <button id="btn-2015">2015</button>
+  <button id="btn-2018">2018</button>
+  <button id="btn-2023" class="active">2023</button>
+</div>
+
+<div class="formula-toggle">
+  <button id="btn-mr" class="active">Mayoría Relativa</button>
+  <button id="btn-rp">Representación Proporcional</button>
+</div>
+<div class="formula-desc" id="formula-desc">
+  Escaños asignados al partido con mayor votación en cada circunscripción.
+</div>
+
+<div id="container"></div>
+
+<div class="editor-toggle">
+  <button onclick="toggleEditor()">⚙ Editar partidos</button>
+</div>
+<div class="party-editor" id="partyEditor">
+  <h3>Personalizar partidos — nombre, sigla y color</h3>
+  <div class="party-grid" id="partyGrid"></div>
+  <div class="editor-apply"><button onclick="applyEdits()">Aplicar cambios</button></div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════
+   PARTIDOS — edita nombre, color y sigla (label)
+════════════════════════════════════════════════════════ */
+const parties = [
+  { id:'p1', name:'Partido A', color:'#1c3f6e', label:'PA' },
+  { id:'p2', name:'Partido B', color:'#e63946', label:'PB' },
+  { id:'p3', name:'Partido C', color:'#2a9d8f', label:'PC' },
+  { id:'p4', name:'Partido D', color:'#f4a261', label:'PD' },
+  { id:'p5', name:'Partido E', color:'#6a0572', label:'PE' },
+  { id:'p6', name:'Partido F', color:'#457b9d', label:'PF' },
+];
+
+/* ════════════════════════════════════════════════════════
+   DATOS — curules por año y fórmula (mr / rp)
+════════════════════════════════════════════════════════ */
+const data = {
+  2015: {
+    mr: { p1:68, p2:38, p3:14, p4:6,  p5:3, p6:3  },
+    rp: { p1:45, p2:35, p3:22, p4:18, p5:8, p6:4  }
+  },
+  2018: {
+    mr: { p1:72, p2:30, p3:16, p4:8,  p5:4, p6:2  },
+    rp: { p1:48, p2:28, p3:26, p4:16, p5:9, p6:5  }
+  },
+  2023: {
+    mr: { p1:60, p2:44, p3:18, p4:8,  p5:2, p6:0  },
+    rp: { p1:40, p2:38, p3:28, p4:14, p5:8, p6:4  }
+  }
+};
+
+const formulaDesc = {
+  mr:'Escaños asignados al partido con mayor votación en cada circunscripción.',
+  rp:'Escaños distribuidos proporcionalmente al total de votos recibidos por cada partido.'
+};
+
+let currentYear = 2023, currentFormula = 'mr';
+
+function getSeriesData(year, formula) {
+  const yd = data[year][formula];
+  return parties.map(p => ({ name:p.name, y:yd[p.id]||0, color:p.color, label:p.label })).filter(d=>d.y>0);
+}
+function totalSeats(year, formula) {
+  return Object.values(data[year][formula]).reduce((a,b)=>a+b,0);
+}
+
+/* ════════════════════════════════════════════════════════
+   INIT CHART
+════════════════════════════════════════════════════════ */
+const chart = Highcharts.chart('container', {
+  chart: {
+    type:'item',
+    animation:{ duration:750, easing:'easeInOutSine' },
+    style:{ fontFamily:'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif' }
+  },
+  title:{
+    text:'Distribución de Curules · <span style="color:#1c3f6e">Mayoría Relativa</span>',
+    useHTML:true,
+    style:{ fontSize:'1.05rem', fontWeight:'700', color:'#0d1b2a' }
+  },
+  subtitle:{
+    text:'Elecciones <b>2023</b> · Total: <b>'+totalSeats(2023,'mr')+' escaños</b>',
+    useHTML:true,
+    style:{ fontSize:'0.82rem', color:'#6b7280' }
+  },
+  legend:{
+    enabled:true, layout:'horizontal', align:'center', verticalAlign:'bottom',
+    itemStyle:{ fontWeight:'600', fontSize:'0.78rem', color:'#374151' },
+    labelFormat:'{name} <span style="opacity:0.5;font-weight:400">{y}</span>'
+  },
+  tooltip:{
+    useHTML:true, headerFormat:'',
+    pointFormatter:function(){
+      const total=this.series.data.reduce((s,p)=>s+p.y,0);
+      const pct=((this.y/total)*100).toFixed(1);
+      return `<span style="color:${this.color};font-size:1.1em">●</span>
+              <b>${this.name}</b><br/>
+              Curules: <b>${this.y}</b>
+              <span style="color:#9ca3af">(${pct}%)</span>`;
+    },
+    style:{ fontSize:'0.82rem' }
+  },
+  series:[{
+    name:'Curules',
+    keys:['name','y','color','label'],
+    data:getSeriesData(2023,'mr'),
+    dataLabels:{
+      enabled:true, format:'{point.label}',
+      style:{ textOutline:'3px contrast', fontSize:'0.7rem', fontWeight:'700' }
+    },
+    center:['50%','88%'], size:'170%', startAngle:-100, endAngle:100, showInLegend:true
+  }],
+  responsive:{
+    rules:[{ condition:{maxWidth:550}, chartOptions:{ series:[{ dataLabels:{distance:-26} }] } }]
+  },
+  credits:{ enabled:false },
+  exporting:{ enabled:false }
+});
+
+/* ════════════════════════════════════════════════════════
+   UPDATE
+════════════════════════════════════════════════════════ */
+function updateChart(year, formula, animate) {
+  const sd = getSeriesData(year, formula);
+  const total = totalSeats(year, formula);
+  const fLabel = formula==='mr' ? 'Mayoría Relativa' : 'Representación Proporcional';
+  const fColor = formula==='mr' ? '#1c3f6e' : '#2a9d8f';
+  chart.update({
+    title:{ text:`Distribución de Curules · <span style="color:${fColor}">${fLabel}</span>` },
+    subtitle:{ text:`Elecciones <b>${year}</b> · Total: <b>${total} escaños</b>` },
+    series:[{ data:sd }]
+  }, true, false, animate ? {duration:750} : false);
+  document.getElementById('formula-desc').textContent = formulaDesc[formula];
+}
+
+/* ════════════════════════════════════════════════════════
+   BUTTONS
+════════════════════════════════════════════════════════ */
+[2015,2018,2023].forEach(yr=>{
+  document.getElementById('btn-'+yr).addEventListener('click',()=>{
+    currentYear=yr;
+    document.querySelectorAll('.year-buttons button').forEach(b=>b.classList.remove('active'));
+    document.getElementById('btn-'+yr).classList.add('active');
+    updateChart(currentYear, currentFormula, true);
+  });
+});
+document.getElementById('btn-mr').addEventListener('click',()=>{
+  currentFormula='mr';
+  document.getElementById('btn-mr').classList.add('active');
+  document.getElementById('btn-rp').classList.remove('active');
+  updateChart(currentYear, currentFormula, true);
+});
+document.getElementById('btn-rp').addEventListener('click',()=>{
+  currentFormula='rp';
+  document.getElementById('btn-rp').classList.add('active');
+  document.getElementById('btn-mr').classList.remove('active');
+  updateChart(currentYear, currentFormula, true);
+});
+
+/* ════════════════════════════════════════════════════════
+   EDITOR
+════════════════════════════════════════════════════════ */
+function buildEditorGrid(){
+  const grid=document.getElementById('partyGrid');
+  grid.innerHTML='';
+  parties.forEach(p=>{
+    const row=document.createElement('div'); row.className='party-row';
+    row.innerHTML=`
+      <input type="color" id="ec-${p.id}" value="${p.color}" />
+      <input type="text"  id="en-${p.id}" value="${p.name}" placeholder="Nombre" />
+      <input type="text"  id="el-${p.id}" value="${p.label}" class="sigla-input" maxlength="4" title="Sigla" />`;
+    grid.appendChild(row);
+  });
+}
+function toggleEditor(){
+  const ed=document.getElementById('partyEditor');
+  const isOpen=ed.classList.contains('open');
+  if(!isOpen) buildEditorGrid();
+  ed.classList.toggle('open',!isOpen);
+}
+function applyEdits(){
+  parties.forEach(p=>{
+    const nc=document.getElementById('ec-'+p.id);
+    const nn=document.getElementById('en-'+p.id);
+    const nl=document.getElementById('el-'+p.id);
+    if(nc) p.color=nc.value;
+    if(nn && nn.value.trim()) p.name=nn.value.trim();
+    if(nl && nl.value.trim()) p.label=nl.value.trim().toUpperCase();
+  });
+  updateChart(currentYear, currentFormula, false);
+}
+</script>
+</body>
+</html>

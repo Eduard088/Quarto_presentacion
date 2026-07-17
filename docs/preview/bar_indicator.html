@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gasto Federalizado en México</title>
+    
+    <style>
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                "Apple Color Emoji",
+                "Segoe UI Emoji",
+                "Segoe UI Symbol",
+                sans-serif;
+            background: var(--highcharts-background-color);
+            color: var(--highcharts-neutral-color-100);
+        }
+
+        #container {
+            height: 500px;
+            width: 100%;
+        }
+
+        .highcharts-figure,
+        .highcharts-data-table table {
+            min-width: 310px;
+            max-width: 800px;
+            margin: 1em auto;
+        }
+
+        .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid var(--highcharts-neutral-color-10, #e6e6e6);
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: var(--highcharts-neutral-color-60, #666);
+        }
+
+        .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table td,
+        .highcharts-data-table th,
+        .highcharts-data-table caption {
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table thead tr,
+        .highcharts-data-table tbody tr:nth-child(even) {
+            background: var(--highcharts-neutral-color-3, #f7f7f7);
+        }
+
+        /* La clase .highcharts-description se podría eliminar, pero la mantengo
+           vacía por si otros componentes de Highcharts la usan. */
+        .highcharts-description {
+            margin: 0.3rem 10px;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/highcharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/exporting.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/export-data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/accessibility.js"></script>
+
+</head>
+<body>
+
+    <figure class="highcharts-figure">
+        <div id="container"></div>
+        </figure>
+
+    <script>
+
+        /* Configuración del gráfico */
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Gasto Federalizado transfederido a los estados en periodos de cooncordancia partidista',
+                align: 'left'
+            },
+            subtitle: {
+                text: 'Ejercicios fiscales 2014-2023 en los gobiernos del PRI y MORENA',
+                align: 'left'
+            },
+            yAxis: {
+                title: {
+                    text: 'Gasto Federalizado en Miles de Millones de Pesos'
+                }
+            },
+            xAxis: {
+                categories: ['PRI (2014-2018)', 'MORENA (2019-2023)'],
+                title: {
+                    text: 'Gubernatura'
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                column: {
+                    borderRadius: '25%'
+                }
+            },
+            series: [{
+                name: 'Alineación partidista',
+                data: [{y: -0.49, color: '#48FF00'}, {y: 2.17, color: '#800040'}]
+            }, {
+                name: 'Sin alineación partidista',
+                data: [{y: 0.49, color: '#48FF00'}, {y: -2.17, color: '#800040'}]
+            }
+            ]
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1174 @@
+---
+project:
+  output-dir: docs
+format: 
+  revealjs:
+    reference-location: document
+    scrollable: true
+    slide-number: true
+    show-slide-number: all
+    controls: true
+    progress: true
+    center: false
+    transition: slide
+    footnotes-hover: true
+    background-transition: fade
+    css: styles.css
+jupyter: python3
+resources:
+  - preview/
+---
+
+## {transition="none" transition-speed="fast"}
+
+::: {.portada-container}
+
+::: {.portada-institution}
+Escuela de Derecho y Ciencias Políticas
+:::
+
+::: {.portada-divider}
+:::
+
+::: {.portada-title}
+Los Efectos de la Reforma Política de 2014 en el Sistema Político Mexicano
+:::
+
+::: {.portada-subtitle}
+Para Obtener el Título de Licenciado en Ciencias Políticas y Relaciones Internacionales
+:::
+
+
+::: {.portada-title}
+Presentada Por
+
+:::
+
+::: {.portada-subtitle}
+Eduardo Alexander Barea Poot
+
+:::
+
+::: {.portada-title}
+Merida, Yucatán, México, 27 de Enero de 2026 
+
+:::
+
+:::
+
+<br>
+<br>
+<br>
+<br>
+
+## {transition="slide" transition-speed="fast"}
+
+:::: {.columns}
+
+::: {.column width="100%"}
+
+***Introducción***
+
+El sistema político mexicano ha experimentado, a lo largo de los siglos, transformaciones profundas que reconfiguraron las estructuras, los procesos y los contenidos que definieron su funcionamiento. La reforma política de 2014, derivada del Pacto por México, constituyó la modificación más reciente y significativa al sistema, resultado de un acuerdo entre las élites partidistas de finales de 2012 que buscaron fortalecer la democracia representativa (Zamitiz, 2017). Para ello se investigó la evolución y el estado de la democracia en el país desde su surgimiento hasta la actualidad.
+
+El objetivo declarado de la reforma fue el fortalecimiento de la democracia, para analizar si el conjunto de medidas que integró la reforma alcanzó su cometido se diseñó una investigación mixta que combinó las metodologías cualitativa y cuantitativa. 
+
+
+:::
+
+::: {.column width="100%"}
+
+<iframe src="preview/reforma_animation.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+<br>
+<br>
+<br>
+<br>
+
+:::
+
+::::
+
+
+## {transition="none" transition-speed="fast"}
+
+::: {.layout-horizontal}
+
+::: {.layout-vertical}
+
+:::{.fragment .fade-down}
+
+::: {.columns}
+::: {.column width="100%"}
+
+***[Plantamiento del problema]{.fragment}***
+
+:::{.fragment}
+En 2014 las élites políticas que protagonziaron el proceso electoral de 2012 diseñaron y aprobaron [una reforma política inetegrada por una serie de adiciones en materia electoral con el objetivo de fortalecer la democracia]{.fragment .highlight-red} (Zamitiz, 2017) en el sistema político mexicano. Sin embargo, los efectos del conjunto de medidas entre 2015 y 2023 fueron insatisfactorios (Alacio, 2016) para el cumplimiento del objetivo declarado
+:::
+:::
+
+:::
+:::
+:::
+
+
+::: {.layout-vertical}
+
+::: {.fragment .fade-up}
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+
+***[Pregunta de Investigación]{.fragment}***
+
+:::{.fragment}
+¿Cómo se explica que, a pesar de que la reforma político-electoral de 2014 fue diseñada para fortalecer la calidad democrática del sistema político mexicano no se observaron avanzces significativos a dicho objetivo en el periodo 2015 - 2023?
+:::
+
+
+:::
+
+::: {.column width="50%"}
+
+***[Objetivo general]{.fragment}***
+
+:::{.fragment}
+Explicar los factores que determinaron el desempeño de las adiciones de la reforma política de 2014 en el sistema político mexicano durante el periodo 2015-2023
+:::
+
+:::
+:::
+
+
+:::
+:::
+:::
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+## {visibility="uncounted"}
+::: {.panel-tabset}
+
+### Hipótesis
+
+::::{.fragment .fade-left}
+::::{.columns}
+
+::: {.column width="100%"}
+[***"Las adiciones de la reforma política de 2014 que pretendieron fortalecer la democracia representativa en el sistema político, tuvieron efectos insatisfactorios para la consolidación de la democracia entre 2015 y 2023 porque las adiciones de la reforma fueron resultado de la negociación de los partidos que ya contaban con un aparato de centralización de poder producto de más de dos siglos y favorables para la partitocracia"***]{.underline}
+:::
+
+::::
+::::
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+### Esquema
+
+::: {.fragment}
+<iframe src="preview/euler_diagram.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+<br>
+<br>
+<br>
+<br>
+
+:::
+:::
+
+## {transition="convex" transition-speed="fast"}
+
+::: {.layout-horizontal}
+
+::: {.layout-vertical}
+
+:::{.fragment fragment-index=1 .fade-down}
+
+::: {.columns}
+::: {.column width="50%"}
+
+***[Metodologia Cualitativa]{.fragment fragment-index=3}***
+
+:::{.fragment fragment-index=4}
+Se consultó literatura especializada en el estudio de la teoría de la democracia representativa [en sus enfoques minimalista y maximalista cuyas variables fueron sintetizados en la Tabla 1]{.fragment fragment-index=5 .highlight-blue}, así como de la teoría de la partitocracia [cuyas variables se sintetizaron en la Tabla 2]{.fragment fragment-index=6 .highlight-blue} a fin de valorar qué enfoque explica el funcionamiento del sistema político mexicano.
+:::
+:::
+
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=7 .fade-up}
+::: {.fragment fragment-index=12 .custom .blur}
+<iframe src="preview/venn_diagram.html"
+        width="190%"
+        height="250"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+:::
+:::
+
+:::
+
+:::
+:::
+
+
+::: {.layout-vertical}
+
+::: {.fragment fragment-index=8 .fade-up}
+
+::: {.columns}
+
+::: {.column width="100%"}
+
+***[Metodologia Cuantitativa]{.fragment fragment-index=9}***
+
+:::{.fragment fragment-index=10}
+Se elaboró una base de datos de los procesos electorales en México entre 2015 y 2023 con base en información del Sistema de Consulta de la Estadística de las Elecciones (SICEEN), a partir de la cual se generaron cinco indicadores, igualmente, se incorporaron conjuntos de datos complementarios para [evaluar los efectos del conjunto de medidas de la reforma política de 2014 en el sistema político mexicano]{.fragment fragment-index=11 .highlight-blue}.
+:::
+
+:::
+
+:::
+:::
+
+:::
+:::
+:::
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+## {transition="concave" transition-speed="fast"}
+::: {.panel-tabset}
+
+### Metodologia cualitativa I
+
+::::{.columns}
+:::{.column width='50%'}
+<iframe src="preview/tables/tabla_democracia.html"
+        width="190%"
+        height="500"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+:::
+
+:::{.column width='50%'}
+<iframe src="preview/sankey_tipologia_democracia.html"
+        width="190%"
+        height="500"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+:::
+
+::::
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+### Metodologia cualitativa II
+
+::::{.columns}
+:::{.column width='50%'}
+<iframe src="preview/tables/tabla_partitocracia.html"
+        width="190%"
+        height="500"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+:::
+
+
+:::{.column width='50%'}
+<iframe src="preview/sankey_tipologia_partitocracia.html"
+        width="190%"
+        height="500"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+:::
+
+
+::::
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+### Aplicación
+<iframe src="preview/timeline.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+:::
+
+
+## {transition="fade" transition-speed="fast"}
+::: {.panel-tabset}
+
+### Adiciones de la reforma
+
+:::: {.layout-vertical}
+:::: {.fragment .fade-down}
+::::{.layout-horizontal}
+
+::::{.columns}
+
+::: {.column width="50%"}
+
+::: {.callout-note title="Adición 1"}
+
+Los delitos electorales en México[^1]
+
+[^1]: ***Adición 1***
+
+        Los registros de los delitos electorales ocurridos en México
+        entre 2018 y 2020 se tomaron de los órganos electorales esp-
+        ecializados como la FEPADE, la FEDE, la FISEL. Para el peri-
+        odo global de la investigación se consultaron notas periodí-
+        sticas de la editorial MILENIO donde investigadores, median-
+        te investigaciones propias, proporcionaron cifras sobre los
+        delitos electorales en el país entre 2012 y 2023.
+
+        Adicionalmente se consultó la ENCUCI del INEGI elaborada en
+        2020 para estimar la percepción ciudadana respecto a la
+        frecuencia de delitos electorales.
+
+                library('tidyverse')
+                library('PropCIs')
+
+                add4ci(exito, n,conf.level = 0.95)
+
+:::
+
+:::
+
+::: {.column width="50%"}
+
+::: {.callout-note title="Adición 2"}
+
+La evolución de las votaciones en México[^2]
+
+[^2]: ***Adición 2***
+
+        Se evaluó la evolución de las votaciones en México a partir 
+        de los datos del conjunto de datos limpiado y sistematizado.
+        Para ello, se consideraron tres procesos electorales, dos i-
+        ntermedios (2015 y 2021) y uno federal (2018) a fin de corr-
+        oborar si a partir de la publicación de la reforma de 2014 
+        los electores votaron en mayor medida
+:::
+
+:::
+
+
+::::
+:::
+::::
+
+::::{.layout-horizontal}
+
+:::: {.fragment .fade-up}
+
+::::{.columns}
+::: {.column width="50%"}
+
+::: {.callout-note title = "Indicador 1"}
+El porcentaje de candidaturas independientes o ciudadanas[^3]
+
+
+[^3]: ***Indicador 1***
+
+        Se evaluó con base en el conjunto de datos limpiado s-
+        las candidaturas independientes en los cómputos globa-
+        les representaron, por lo menos, el 5% de las candida-
+        turas postuladas, así como de las candidaturas electa-
+        s entre 2015 y 2023
+:::
+
+:::
+
+
+::: {.column width="50%"}
+
+::: {.callout-note title = "Indicador 2"}
+
+Las prerrogativas a partidos políticos y candidaturas independientes[^4]
+
+[^4]: ***Indicador 2***
+
+        Se evaluó con base en el Financiamiento anual ordinar-
+        io y el Financiamiento anual federal si los partidos p-
+        olíticos y las candidaturas independientes recibieron
+        prerrogativas proporcionales entre 2015 y 2023
+
+:::
+
+:::
+
+::::
+::::
+::::
+
+::::
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+### Indicadores
+
+:::: {.layout-vertical}
+
+::::{.layout-horizontal}
+
+:::: {.fragment .fade-up}
+
+::::{.columns}
+::: {.column width="50%"}
+
+::: {.callout-note title = "Indicador 3"}
+El Gasto Federalizado destinado a estados en periodos de consonancia partidista[^5]
+
+[^5]: ***Indicador 3***
+
+        Se evaluó el Gasto Federalizado transfederado a los est-
+        ados entre 2014 y 2023 con base en las Transferencias d-
+        el Gobierno Federal a Entidades Federativas y Municipio-
+        s del Estadísticas Oportunas de Finanzas Públicas de la
+        SHCP para determinar si existió mayor asignación de rec-
+        ursos en periodos de consonancia partidista entre el go-
+        bierno estatal y el gobierno federal. Para ello se real-
+        pruebas de muestras pareadas paramétricas y no paramétr-
+        icas.
+
+:::
+
+:::
+
+
+::: {.column width="50%"}
+
+::: {.callout-note title = "Indicador 4"}
+
+La paridad de género y el Índice de fragmentación política de Laakso y Taagepera[^6]
+
+[^6]: ***Indicador 4***
+
+        Se evaluó si la postulación del mismo número de candidat-
+        uras por sexo se significó que hombres y mujeres, ocupar-
+        on, un porcentaje similar al 50% de los cargos electos e-
+        ntre 2015 y 2023. Asimismo, se evaluó el grado de fragme-
+        ntación de la partitocracia mexicana en los distintos es-
+        pacios analizados en la paridad de género. 
+
+:::
+
+:::
+
+::::
+::::
+::::
+
+
+::::{.fragment .fade-right}
+::: {.text-block}
+
+::: {.callout-note title = "Indicador 5"}
+El porcentaje de cargos públicos ocupados por miembros de los partidos[^7]
+
+[^7]: ***Indicador 5***
+
+        Se evaluó con base en el conjunto de datos limpiado si l-
+        os militantes de los partidos políticos ocuparon el 70% o
+        más de los cargos de elección popular electos entre 2015
+        y 2023.
+:::
+
+:::
+
+
+::::
+
+::::
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+:::
+
+## {transition='zoom' transition-speed='fast'}
+
+::: {.panel-tabset}
+
+### Adición 1
+
+::::{.columns}
+
+:::: {.column width="50%"}
+
+<iframe src="preview/bar_graph.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+::::
+
+
+::::{.text-block}
+
+<br>
+
+::: {.column width="85%"}
+
+***Hallazgo 1:*** 
+La reforma no limitó la ocurrencia de <br>
+delitos electorales en México
+
+:::
+
+::::{.text-block}
+
+<br>
+
+::: {.column width="85%"}
+[*En consecuencia, no existe certeza <br>
+de que las personas electas no in- <br>
+currieron en delitos electorales*]{.fragment .highlight-red}
+:::
+
+:::
+::::
+::::
+<br>
+<br>
+<br>
+<br>
+
+:::
+
+##
+:::{.panel-tabset}
+
+### Adición 2
+
+::::{.columns}
+
+:::: {.column width="50%"}
+
+<iframe src="preview/line_graph.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+::::
+
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="87%"}
+
+***Hallazgo 2:*** 
+La reforma incentivó la participación del <br> 
+electorado en el país
+:::
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="86%"}
+[*En los procesos electorales analizados <br>
+se emitieron 425 millones 552 mi voto-  <br>
+s. En 2021, las cifras casi se duplicaron  <br>
+respecto a 2015*]{.fragment .highlight-green}
+:::
+
+:::
+::::
+::::
+<br>
+<br>
+<br>
+<br>
+
+:::
+
+##
+::: {.panel-tabset}
+### Indicador 1
+
+::::{.columns}
+
+:::: {.column width="50%"}
+
+<iframe src="preview/candidturas_independientes_graph.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+::::
+
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="86%"}
+
+***Hallazgo 3:*** 
+Las candidaturas no tuvieron presencia <br> 
+sustancial en el mercado electoral
+:::
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="85%"}
+[*El porcentaje de candidaturas indep- <br>
+endientes registradas y electas no f- <br>
+ueron significativas para restar pod-<br>
+er a las élites de los partidos*]{.fragment .highlight-red}
+:::
+
+:::
+::::
+::::
+<br>
+<br>
+<br>
+<br>
+
+
+### Indicador 1
+
+::::{.columns}
+
+:::: {.column width="50%"}
+
+<iframe src="preview/candidaturas_independientes_graph_2.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+::::
+
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="86%"}
+
+***Hallazgo 3:*** 
+Las candidaturas no tuvieron presencia <br> 
+sustancial en el mercado electoral
+:::
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="85%"}
+[*El porcentaje de candidaturas indep- <br>
+endientes registradas y electas no f- <br>
+ueron significativas para restar pod-<br>
+er a las élites de los partidos*]{.fragment .highlight-red}
+:::
+
+:::
+::::
+::::
+<br>
+<br>
+<br>
+<br>
+
+:::
+
+
+##
+::: {.panel-tabset}
+### Indicador 2
+
+::::{.columns}
+
+:::: {.column width="50%"}
+
+<iframe src="preview/prueba.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+::::
+
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="86%"}
+
+***Hallazgo 4:***
+Las prerrogativas no fueron equitativ-<br> 
+as entre las élites de los partidos y la- <br> 
+s candidaturas independientes
+
+:::
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="85%"}
+[*Las candidaturas independientes fu- <br>
+eron el esquema de participacipaci- <br>
+ón que menos recursos recibió dura- <br>
+nte la última década*]{.fragment .highlight-red}
+:::
+
+:::
+::::
+::::
+<br>
+<br>
+<br>
+<br>
+
+:::
+
+
+##
+::: {.panel-tabset}
+### Indicador 3
+
+::::{.columns}
+
+:::: {.column width="50%"}
+
+<iframe src="preview/bar_indicator.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+::::
+
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="89%"}
+
+***Hallazgo 5:***
+El Gasto Federalizado transferido a los estados <br> 
+entre 2014 y 2019 no supuso beneficios económ- <br> 
+icos, sin embargo, la tendencia entre 2019 y 202- <br> 
+3 señaló mayores transferencias cuando existió <br> 
+coordinación partidista 
+:::
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="89%"}
+[*Por lo cual , la coincidencia partidista supuso<br>
+ miles de millones de pesos para los estados*]{.fragment .highlight-red}
+:::
+
+:::
+::::
+::::
+<br>
+<br>
+<br>
+<br>
+
+:::
+
+
+##
+::: {.panel-tabset}
+### Indicador 4
+
+::::{.columns}
+
+:::: {.column width="50%"}
+
+<iframe src="preview/pictorial_chart.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+::::
+
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="87%"}
+
+***Hallazgo 6:***
+La paridad de género no se consolido en <br>términos absolutos
+:::
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="86%"}
+[*Los resultados fueron mixtos, en algu-<br>nos espacios el porcentaje de cargos <br>por sexo se acercó al 50%, en otros, l-<br>os hombres fueron mayoría*]{.fragment .highlight-red}
+:::
+
+:::
+::::
+::::
+<br>
+<br>
+<br>
+<br>
+
+### Indicador 4
+
+::::{.columns}
+
+:::: {.column width="50%"}
+
+<iframe src="preview/boxplot_graph.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+::::
+
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="87%"}
+
+***Hallazgo 7:***
+Los resultados del índice NEP revelaron que<br> 
+en la partitocracia mexicana participan él-<br>
+ites de distintos partidos
+
+:::
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="86%"}
+
+[*Salvo en los cargos federales, la median- <br>
+a osciló entre 3 y 4, lo cual señaló que los <br>
+cargos de elección popular se repartier- <br>
+on entre las élites de 3 o 4 partidos*]{.fragment .highlight-red}
+:::
+
+:::
+::::
+::::
+<br>
+<br>
+<br>
+<br>
+
+:::
+
+##
+::: {.panel-tabset}
+### Indicador 5
+
+::::{.columns}
+
+:::: {.column width="50%"}
+
+<iframe src="preview/line_graph_2.html"
+        width="190%"
+        height="550"
+        frameborder="0"
+        allowfullscreen>
+</iframe>
+
+::::
+
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="80%"}
+
+***Hallazgo 8:***
+La mayoría de los cargos de elección <br>
+popular estuvieron en dominio de las <br> 
+élites de los partidos
+:::
+
+::::{.text-block}
+
+<br>
+<br>
+
+::: {.column width="80%"}
+[*Las élites superaron el límite del 70%,<br> 
+lo cual significó colonización partidi-<br>
+sta de los cargos electos*]{.fragment .highlight-red}
+:::
+
+:::
+::::
+::::
+<br>
+<br>
+<br>
+<br>
+
+:::
+
+##
+::::{.fragment .fade-left}
+::::{.columns}
+
+::: {.column width="100%"}
+***Validación de hipótesis***
+
+[***"Las adiciones de la reforma política de 2014, en su conjunto, tuvieron efectos insatisfactorios y no fortalecieron la democracia en el sistema político mexicano entre 2015 y 2023 porque las élites partidistas del Pacto por México encargadas de la negociación contaron con un aparato de centralización de poder de más de dos siglos favorable a la partitocracia, lo cual, les permitió diseñar las adiciones conforme a sus intereses y no con el objetivo de fortalecer la democracia"***]{.underline}
+
+:::
+
+::::
+::::
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+## {transition="fade" transition-speed="fast"}
+
+::::{.columns}
+
+:::{.column width=100%}
+
+***[Conclusiones]{.fragment}***
+
+:::{.incremental .fragment}
+- Se identificó que el sistema político mexicano históricamente tuvo vinculación con las variables de la partitocracia lo que limitó su objetivo democraatizador
+- El conjunto de medidas de la reforma no redujo la presencia de las élites de los partidos en los cargos de elección popular entre 2015 y 2023
+- La ciudadanía no participó en condiciones de igualdad con las élites tanto por los cargos de elección popular como el acceso a las prerrogativas
+- El conjunto de medidas no debilitó la partitocracia en el sistema político mexicano
+- Algunas adiciones de la reforma como la legitimidad de los representantes aumentó y la paridad de género logró su objetivo de equilibrar el porcentaje de personas electas por sexo en un 50% en algunos cargos de elección popular.
+
+:::
+:::
+
+
+:::{.column width=100%}
+
+***[Recomendaciones]{.fragment}***
+
+:::{.incremental .fragment}
+- Investigar las correlaciones y las causas de los efectos insatisfactorios de las adiciones de la reforma en el sistema político mexicano
+- Profundizar el estudio del aumento de la legitimidad y la paridad de género en los cargos en que fue alcanzada
+- Diseñar y elaborar reformas políticas donde la ciudadanía forme parte de los procesos y no quede relegada a los intereses de las élites partidistas
+- Asegurar que las candidaturas independientes y las élites partidistas compitan en igualdad de condiciones por los cargos de elección popular
+- Reducir el porcentaje de cargos públicos ocupados por las élites partidistas
+
+:::
+
+:::
+
+::::
+
+
+## {transition="fade" transition-speed="fast"}
+
+#### *Referencias*:
+
+
+Alacio, R. (2016). La reforma político-electoral 2013-2014. Una participación ciudadana a medio camino. Revista mexicana de opinión pública, 20, 83–104. https://www.scielo.org.mx/scielo.php?script=sci_arttextypid=S2448-49112016000100083
+
+Bobbio, N. (2018b). Liberalismo y Democracia (J. Fernández, Trad.; 16a ed.). Fondo de Cultura Económica.
+
+Dahl, R. (2012). La democracia (F. Vallespín, Trad.). Ariel.
+
+Fernández de la Mora, G. (2024). La partitocracia. SND Editores.
+
+García, A. (2010). Teoría pura de la república. El buey mudo.
+
+Pasquino, G. (2018). Partidocracia. En Diccionario de Política (1a ed., p. 3). siglo veintiuno editores.
+
+Przeworski, A. (2003). Democracia Y Mercado: Reformas Políticas Y Económicas En La Europa del Este Y América Latina (M. Bofil, Trad.). Cambridge University Press.
+
+Przeworski, A. (2019). Crises of Democracy. Cambridge University Press.
+
+Pulantzas, N., Hall, S., Camiller, P., y Pulantzas, N. (2014). State, power, socialism. Verso.
+
+Ragazzoni, D. (2019). “Particracy”, or The Ideology of Antipartyism: The Constituent Paradox of Italian Party Democracy. Department of Political Science Columbia University.
+
+<br>
+<br>
+
+
+## {transition="fade" transition-speed="fast"}
+
+Sartori, G. (2012b). ¿Qué es la democracia? Penguin Random House Grupo Editorial México.
+
+Sartori, G. (2019). Elementos de Teoría Política (M. Morán, Trad.). eboohelo.
+
+SICEEN. (s/f). Sistema de Consulta de la Estadística de las Elecciones. Sistema de Consulta de la Estadística de las Elecciones del Proceso Electoral 2020-2024. https://siceen21.ine.mx/busqueda/Gubernatura/7/2/2016/2
+
+Zamitiz, H. (2017). La reforma político-electoral 2014-2015: ¿híbrido institucional o avance gradual del sistema democrático en México? Estudios Políticos, 40, 11–46. https://www.revistas.unam.mx/index.php/rep/article/view/58816
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

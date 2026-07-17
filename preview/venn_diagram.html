@@ -1,0 +1,253 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Diagrama de Venn — Metodologías</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/highcharts.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/venn.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/exporting.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/export-data.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/accessibility.js"></script>
+	<style>
+		:root{
+			--highcharts-background-color: #ffffff;
+			--highcharts-neutral-color-100: #222222;
+			--highcharts-neutral-color-10: #e6e6e6;
+			--highcharts-neutral-color-3: #f7f7f7;
+			--highcharts-neutral-color-60: #666666;
+			--primary-blue: #1e3a8a;
+			--secondary-blue: #3b82f6;
+		}
+		body {
+			font-family:
+				-apple-system,
+				BlinkMacSystemFont,
+				"Segoe UI",
+				Roboto,
+				Helvetica,
+				Arial,
+				"Apple Color Emoji",
+				"Segoe UI Emoji",
+				"Segoe UI Symbol",
+				sans-serif;
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			overflow-x: hidden;
+		}
+
+		#container {
+			height: 250px;
+			width: 100%;
+			max-width: none;
+			margin: 0;
+		}
+
+		.highcharts-figure {
+			min-width: 100%;
+			max-width: none;
+			margin: 0;
+			width: 100%;
+		}
+
+		.highcharts-data-table table {
+			font-family: Verdana, sans-serif;
+			border-collapse: collapse;
+			border: 1px solid var(--highcharts-neutral-color-10, #e6e6e6);
+			margin: 10px auto;
+			text-align: center;
+			width: 100%;
+			max-width: 500px;
+		}
+
+		.highcharts-data-table caption {
+			padding: 1em 0;
+			font-size: 1.2em;
+			color: var(--highcharts-neutral-color-60, #666);
+		}
+
+		.highcharts-data-table th {
+			font-weight: 600;
+			padding: 0.5em;
+		}
+
+		.highcharts-data-table td,
+		.highcharts-data-table th,
+		.highcharts-data-table caption {
+			padding: 0.5em;
+		}
+
+		.highcharts-data-table thead tr,
+		.highcharts-data-table tbody tr:nth-child(even) {
+			background: var(--highcharts-neutral-color-3, #f7f7f7);
+		}
+
+		.highcharts-description {
+			display: none;
+		}
+
+		/* Mejorar menú de exportación */
+		.highcharts-menu {
+			background: #ffffff !important;
+			border: 1px solid #ddd !important;
+			border-radius: 6px !important;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+		}
+
+		.highcharts-menu-item {
+			color: #000000 !important;
+			padding: 8px 16px !important;
+		}
+
+		.highcharts-menu-item:hover {
+			background: #f0f0f0 !important;
+			color: #000000 !important;
+		}
+
+		/* Botón de exportación */
+		.highcharts-exporting-group text,
+		.highcharts-exporting-group tspan {
+			fill: #000000 !important;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="container"></div>
+
+	<script>
+		Highcharts.chart('container', {
+			chart: {
+				style: {
+					fontFamily: 'Roboto, sans-serif'
+				}
+			},
+			credits: {
+				enabled: false
+			},
+			exporting: {
+				buttons: {
+					contextButton: {
+						menuItems: ['viewFullscreen', 'printChart', 'separator', 'downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG', 'separator', 'downloadCSV', 'downloadXLS']
+					}
+				},
+				chartOptions: {
+					title: {
+						style: {
+							color: '#000000',
+							fontSize: '16px'
+						}
+					}
+				}
+			},
+			accessibility: {
+				point: {
+					valueDescriptionFormat: '{point.name}: {point.longDescription}.'
+				}
+			},
+			plotOptions: {
+				venn: {
+					dataLabels: {
+						enabled: true,
+						formatter: function() {
+							return '<strong>' + this.point.name + '</strong>';
+						},
+						style: {
+							fontSize: '13px',
+							fontWeight: '600',
+							color: '#ffffff',
+							textOutline: 'none'
+						}
+					},
+					states: {
+						hover: {
+							opacity: 0.9,
+							filter: {
+								type: 'glow',
+								color: '#1e3a8a'
+							}
+						}
+					}
+				}
+			},
+			series: [{
+				type: 'venn',
+				colorByPoint: true,
+				data: [{
+					sets: ['A'],
+					value: 4,
+					name: 'Metodología Cualitativa',
+					color: '#3b82f6',
+					longDescription: '<strong>Cualitativa</strong><br/>' +
+						'Comprensión profunda de fenómenos<br/>' +
+						'• Análisis del sistema político<br/>' +
+						'• Descripción de la democracia<br/>' +
+						'• Descripción de la partitocracia<br/>' +
+						'• Estudio de las élites en el sistema político<br/>' +
+						'<em style="color: #666;">Énfasis: significados, contexto y procesos</em>'
+				}, {
+					sets: ['B'],
+					value: 4,
+					name: 'Metodología Cuantitativa',
+					color: '#ec4899',
+					longDescription: '<strong>Cuantitativa</strong><br/>' +
+						'Mediciones y análisis estadístico<br/>' +
+						'• Creación de base de datos<br/>' +
+						'• Aplicación de ciencia de datos<br/>' +
+						'• Evaluación de los indicadores de la reforma<br/>' +
+						'• Medición de la transformación democrática de la reforma<br/>' +
+						'<em style="color: #666;">Énfasis: generalización y verificación de hipótesis</em>'
+				}, {
+					sets: ['A', 'B'],
+					value: 2,
+					name: 'Metodología Mixta',
+					color: '#8b5cf6',
+					longDescription: '<strong>DEXPLOS</strong><br/>' +
+					'De acuerdo con Sampieri (2014) la metodología mixta <br/>' +
+					'es un conjunto de procesos sistematizados, empíricos  <br/>' +
+					'y críticos que permiten la recolección de datos cuanti- <br/>' +
+					'tativos y cualitativos'
+				}]
+			}],
+			tooltip: {
+				useHTML: true,
+				backgroundColor: '#ffffff',
+				borderColor: '#1e3a8a',
+				borderWidth: 2,
+				borderRadius: 8,
+				padding: 12,
+				shadow: {
+					color: 'rgba(0, 0, 0, 0.2)',
+					offsetX: 2,
+					offsetY: 2,
+					blur: 8
+				},
+				headerFormat:
+					'<div style="border-bottom: 2px solid {point.color}; padding-bottom: 8px; margin-bottom: 8px;">' +
+					'<span style="font-size: 16px; font-weight: 700; color: #000000;">{point.point.name}</span>' +
+					'</div>',
+				pointFormat: '<div style="color: #333333; line-height: 1.6;">{point.longDescription}</div>',
+				footerFormat: '</div>'
+			},
+			title: {
+				text: null
+			},
+			subtitle: {
+				text: null
+			}
+		});
+
+		// Aplicar estilos adicionales al menú de exportación
+		setTimeout(function() {
+			var menuItems = document.querySelectorAll('.highcharts-menu-item');
+			menuItems.forEach(function(item) {
+				item.style.color = '#000000';
+			});
+		}, 500);
+	</script>
+
+</body>
+</html>
+

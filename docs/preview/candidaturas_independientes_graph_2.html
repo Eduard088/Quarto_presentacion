@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Candidaturas por Partido - Highcharts JS Data</title>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/highcharts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/annotations.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/exporting.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/accessibility.js"></script>
+
+<style>
+@import url("https://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+
+body {
+    background: #ffff;
+    color: #000;
+    font-family: Arial, sans-serif;
+}
+
+
+.highcharts-figure { margin: 0; }
+
+
+figure {
+    margin: 0;
+}
+
+#play-controls {
+    max-width: 600px;
+    margin: 1em auto;
+}
+
+#container {
+    height: 400px;
+    max-width: 95%;
+}
+
+#play-pause-button {
+    margin-left: 10px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: 1px solid rgba(2, 117, 255, 1);
+    border-radius: 25px;
+    color: white;
+    background-color: rgba(2, 117, 255, 1);
+    transition: background-color 250ms;
+}
+
+#play-pause-button:hover {
+    background-color: rgba(2, 117, 255, 0.5);
+}
+
+#play-range {
+    transform: translateY(2.5px);
+    width: calc(100% - 90px);
+    background: #f8f9fa;
+}
+</style>
+</head>
+
+<body>
+
+<figure class="highcharts-figure">
+  <div id="parent-container">
+    <div id="play-controls">
+      <button id="play-pause-button" class="fa fa-play" title="play"></button>
+      <input id="play-range" type="range" value="0" min="0" max="7" />
+    </div>
+    <div id="container"></div>
+  </div>
+</figure>
+
+<script>
+
+Highcharts.setOptions({
+    lang: {
+        thousandsSep: ','  
+    }
+});
+
+const dataset = [
+    {
+        name: 'PRI',
+        color: '#48FF00',
+        data: [0, 3695, 3885, 4237, 6748, 6790, 6790] 
+    },
+    {
+        name: 'MORENA',
+        color: '#800040',
+        data: [0, 1074, 1170, 1270, 4569, 4573, 4573]
+    },
+    {
+        name: 'PAN',
+        color: '#006AFF',
+        data: [0, 1456, 1654, 1723, 3941, 3958, 3958]
+    },
+    {
+        name: 'PT-MORENA-ES',
+        color: '#800040',
+        data: [0, 2900, 2900, 2900, 2900, 2900, 2900]
+    },
+    {
+        name: 'PVEM',
+        color: '#00FF99',
+        data: [0, 957, 980, 1015, 2348, 2351, 2351]
+    },
+    {
+        name: 'MC',
+        color: '#FF8000',
+        data: [0, 580, 611, 648, 2098, 2117, 2117]
+    },
+    {
+        name: 'PAN-PRD-MC',
+        color: '#006AFF',
+        data: [0, 1922, 1922, 1922, 1922, 1922, 1922]
+    },
+    {
+        name: 'PAN-PRI-PRD',
+        color: '#006AFF',
+        data: [0, 0, 0, 0, 1567, 1723, 1758]
+    },
+    {
+        name: 'PRD',
+        color: '#FFE100',
+        data: [0, 619, 656, 727, 1437, 1448, 1448]
+    },
+    {
+        name: 'PT-MORENA',
+        color: '#800040',
+        data: [0, 326, 326, 1092, 1092, 1092, 1092]
+    },
+    {
+        name: 'Independientes',
+        color: '#5ED7FF',
+        data: [0, 281, 289, 314, 509, 509, 509]
+    },
+    {
+        name: 'Otro',
+        color: '#4769BA',
+        data: [0, 4437, 4579, 4965, 11570, 11753, 11760]
+    }
+];
+
+const startYear = 2017;
+const years = Array.from({length: 7}, (_, i) => (startYear + i).toString());
+const endRound = years.length - 1; 
+
+const btn = document.getElementById('play-pause-button'),
+    input = document.getElementById('play-range'),
+    animationDuration = 1500;
+
+const chart = Highcharts.chart('container', {
+    chart: {
+        type: 'line',
+        marginRight: 200,
+        backgroundColor: '#ffffff',
+        plotBackgroundColor: '#ffffff',
+        animation: {
+            duration: animationDuration,
+            easing: t => t
+        }
+    },
+    title: {
+        text: 'Cantidad acumulada de cargos por agrupación entre 2015 y 2023',
+        floating: true,
+        align: 'left',
+        x: 40,
+        y: 20
+    },
+    subtitle: {
+        text: 'Fuente: <a href="https://www.inegi.org.mx/programas/cnple/2024/">INEGI</a>, <a href="https://siceen21.ine.mx/downloadzip">SICEEN</a>',
+        align: 'left',
+        x: 40,
+        y: 45
+    },
+    
+    series: dataset.map(series => ({
+        name: series.name,
+        color: series.color,
+        data: [series.data[0]]
+    })),
+
+    xAxis: {
+        allowDecimals: false,
+        categories: years,
+        min: 0,
+        max: endRound
+    },
+    yAxis: {
+        reversedStacks: false,
+        title: {
+            text: 'Número de Candidaturas'
+        }
+    },
+    tooltip: {
+        split: true,
+        headerFormat: '<span style="font-size: 1.2em">{point.category}</span>',
+        pointFormat: '{series.name}: {point.y} Candidaturas',
+        crosshairs: true
+    },
+    plotOptions: {
+        line: {
+            animation: false,
+            marker: {
+                enabled: false
+            },
+            lineWidth: 3
+        }
+    },
+    annotations: [
+        {
+            crop: false,
+            labelOptions: {
+                borderWidth: 0,
+                backgroundColor: undefined,
+                align: 'left',
+                verticalAlign: 'middle',
+                overflow: 'allow',
+                style: {
+                    pointerEvents: 'none',
+                    fontWeight: 'bold',
+                    textOutline: '2px contrast',
+                    transition: 'opacity 0.5s'
+                },
+                x: 5,
+                y: 0
+            },
+            labels: dataset.map(() => ({
+                text: '',
+                point: { x: 0, xAxis: 0, y: 0, yAxis: 0 }
+            }))
+        }
+    ],
+    responsive: {
+        rules: [{
+            condition: { maxWidth: 500 },
+            chartOptions: {
+                chart: { marginTop: 80 },
+                legend: { enabled: false }
+            }
+        }]
+    }
+});
+
+function pause(button) {
+    button.title = 'play';
+    button.className = 'fa fa-play';
+    clearTimeout(chart.sequenceTimer);
+    chart.sequenceTimer = undefined;
+}
+
+function update(sliderClicked) {
+    const yearIndex = parseInt(input.value, 11);
+    const annotationsLabels = chart.annotations[0].labels;
+
+    dataset.forEach((originalSeries, i) => {
+        const chartSeries = chart.series[i];
+        const currentDataSlice = originalSeries.data.slice(0, yearIndex + 1);
+        chartSeries.setData(currentDataSlice, false);
+
+        const currentY = originalSeries.data[yearIndex];
+        if (currentY !== undefined) {
+            annotationsLabels[i].options.point.x = yearIndex;
+            annotationsLabels[i].options.point.y = currentY;
+            annotationsLabels[i].options.text = `<span style="color:${originalSeries.color}; font-size: 14px;">● ${originalSeries.name}</span>`;
+        }
+    });
+
+    chart.redraw();
+
+    if (!sliderClicked) {
+        input.value = yearIndex + 1;
+        if (input.value > endRound) {
+            pause(btn);
+        }
+    }
+}
+
+function play(button) {
+    if (parseInt(input.value, 11) > endRound) {
+        input.value = 0;
+        update(true);
+    }
+    
+    button.title = 'pause';
+    button.className = 'fa fa-pause';
+    
+    // SOLUCIÓN: Actualizar inmediatamente antes de iniciar el intervalo
+    update(false);
+    
+    chart.sequenceTimer = setInterval(function () {
+        update(false);
+    }, animationDuration);
+}
+
+btn.addEventListener('click', function () {
+    if (chart.sequenceTimer) {
+        pause(this);
+    } else {
+        play(this);
+    }
+});
+
+input.addEventListener('input', function () {
+    pause(btn);
+    update(true);
+});
+
+update(true); 
+
+</script>
+
+</body>
+</html>

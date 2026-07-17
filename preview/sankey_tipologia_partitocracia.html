@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sankey Diagram - Tipología de la Democracia</title>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/highcharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/sankey.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/non-cartesian-zoom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/mouse-wheel-zoom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/exporting.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/export-data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/accessibility.js"></script>
+
+    
+    <style>
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                "Apple Color Emoji",
+                "Segoe UI Emoji",
+                "Segoe UI Symbol",
+                sans-serif;
+            background: #ffffff;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+
+        #csv {
+            display: none;
+        }
+
+        .highcharts-figure,
+        .highcharts-data-table table {
+            min-width: 310px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid var(--highcharts-neutral-color-10, #e6e6e6);
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: var(--highcharts-neutral-color-60, #666);
+        }
+
+        .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table td,
+        .highcharts-data-table th,
+        .highcharts-data-table caption {
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table thead tr,
+        .highcharts-data-table tbody tr:nth-child(even) {
+            background: var(--highcharts-neutral-color-3, #f7f7f7);
+        }
+
+        .highcharts-description {
+            display: none;
+        }
+
+        #container {
+            width: 100%;
+            height: 500px;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <figure class="highcharts-figure">
+        <div id="container"></div>
+        <p class="highcharts-description">
+            Los diagramas Sankey se utilizan para visualizar el flujo de datos
+            entre nodos. Las líneas más anchas indican mayor relevancia o cantidad.
+        </p>
+    </figure>
+
+    <script>
+        Highcharts.setOptions({
+            chart: {
+                backgroundColor: '#ffffff'
+            },
+            title: {
+                style: {
+                    color: '#000000'
+                }
+            },
+            subtitle: {
+                style: {
+                    color: '#000000'
+                }
+            }
+        });
+
+        Highcharts.chart('container', {
+
+            chart: {
+                zooming: {
+                    type: 'xy'
+                },
+                panning: {
+                    enabled: true,
+                    type: 'xy'
+                },
+                panKey: 'shift',
+                backgroundColor: '#ffffff',
+                spacingLeft: 50,
+                spacingRight: 50
+            },
+            title: {
+                text: 'Variables de la Partitocracia Según el Autor',
+                style: {
+                    color: '#000000',
+                    fontSize: '18px',
+                    fontWeight: 'bold'
+                }
+            },
+            subtitle: {
+                text: 'Análisis de Ferández de la Mora, García, Pasquino, Ragazzoni, Pulantzas, Ridao y Merino',
+                style: {
+                    color: '#666666',
+                    fontSize: '14px'
+                }
+            },
+            accessibility: {
+                point: {
+                    valueDescriptionFormat: '{index}. {point.from} → {point.to}'
+                }
+            },
+            tooltip: {
+                headerFormat: null,
+                pointFormat: '<b>{point.fromNode.name}</b> → <b>{point.toNode.name}</b>',
+                backgroundColor: '#ffffff',
+                borderColor: '#cccccc',
+                style: {
+                    color: '#000000'
+                }
+            },
+            series: [{
+                keys: ['from', 'to', 'weight'],
+                nodes: [
+                    // COLUMNA 1: VARIABLES INSTITUCIONALES
+                    { id: 'Concentración de poder', color: '#3498db', column: 0 },
+                    { id: 'Ampliación de pdoer', color: '#3498db', column: 0 },
+                    { id: 'Poder ejecutivo', color: '#3498db', column: 0 },
+
+                    // COLUMNA 1: VARIABLES NO INSTITUCIONALES
+                    { id: 'Reducción de libertad', color: '#9b59b6', column: 0 },
+                    { id: 'Toma de decisiones en las élites', color: '#9b59b6', column: 0 },
+                    { id: 'Subordinación a las élites', color: '#9b59b6', column: 0 },
+                    { id: 'Corrupción', color: '#9b59b6', column: 0 },
+                    { id: 'Insatisfacción con la democracia', color: '#9b59b6', column: 0 },
+
+
+                    // COLUMNA 2: CATEGORÍAS
+                    { id: 'Institucionales', color: '#2980b9', column: 1 },
+                    { id: 'No Institucionales', color: '#8e44ad', column: 1 },
+
+                    // COLUMNA 3: AUTORES
+                    { id: 'Fernández de la Mora', color: '#27ae60', column: 2 },
+                    { id: 'García', color: '#27ae60', column: 2 },
+                    { id: 'Pasquino', color: '#27ae60', column: 2 },
+                    { id: 'Ragazzoni', color: '#27ae60', column: 2 },
+                    { id: 'Pulantzas', color: '#27ae60', column: 2 },
+                    { id: 'Ridao', color: '#27ae60', column: 2 },
+                    { id: 'Merino', color: '#27ae60', column: 2 },
+                ],
+
+                data: [
+                    // Variables Institucionales → Categoría Institucionales
+                    ['Concentración de poder', 'Institucionales', 1],
+                    ['Ampliación de poder', 'Institucionales', 1],
+                    ['Poder Ejecutivo', 'Institucionales', 1],
+
+
+                    // Variables No Institucionales → Categoría No Institucionales
+                    ['Reducción de libertad', 'No Institucionales', 1],
+                    ['Toma de decisiones en las élites', 'No Institucionales', 1],
+                    ['Subordinación a las élites', 'No Institucionales', 1],
+                    ['Corrupción', 'No Institucionales', 1],
+                    ['Insatisfacción con la democracia', 'No Institucionales', 1],
+
+                    // Institucionales → Autores
+                    ['Institucionales', 'Fernández de la Mora', 1],
+                    ['Institucionales', 'García', 1],
+                    ['Institucionales', 'Pulantzas', 1],
+                    ['Institucionales', 'Pasquino', 1],
+                    ['Institucionales', 'Ragazzoni', 1],
+
+                    // No Institucionales → Autores
+                    ['No Institucionales', 'Fernández de la Mora', 3],
+                    ['No Institucionales', 'García', 3],
+                    ['No Institucionales', 'Ridao', 1],
+                    ['No Institucionales', 'Merino', 1],
+
+                ],
+                type: 'sankey',
+                name: 'Tipología Partitocrática',
+                dataLabels: {
+                    enabled: true,
+                    style: {
+                        color: '#000000',
+                        fontSize: '11px',
+                        fontWeight: 'normal'
+                    }
+                }
+            }]
+
+        });
+    </script>
+</body>
+</html>

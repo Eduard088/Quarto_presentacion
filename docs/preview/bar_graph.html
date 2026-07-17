@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delitos electorales en México</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/highcharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/exporting.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/export-data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/accessibility.js"></script>
+
+    <style>
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                "Apple Color Emoji",
+                "Segoe UI Emoji",
+                "Segoe UI Symbol",
+                sans-serif;
+            background: var(--highcharts-background-color);
+            color: var(--highcharts-neutral-color-100);
+        }
+
+        .highcharts-figure,
+        .highcharts-data-table table {
+            margin: 1em auto;
+        }
+
+        #container {
+            height: 515px;
+            width: 95%;
+        }
+
+        .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid var(--highcharts-neutral-color-10, #e6e6e6);
+            margin: 10px auto;
+            text-align: center;
+        }
+
+        .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: var(--highcharts-neutral-color-60, #666);
+        }
+
+        .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table td,
+        .highcharts-data-table th,
+        .highcharts-data-table caption {
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table thead tr,
+        .highcharts-data-table tbody tr:nth-child(even) {
+            background: var(--highcharts-neutral-color-3, #f7f7f7);
+        }
+    </style>
+</head>
+
+<body>
+    <figure class="highcharts-figure">
+        <div id="container"></div>
+    </figure>
+
+
+    <script>
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: ','   // <-- evita “10.000”, “11.000”, etc.
+            }
+        });
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Delitos electorales en México entre 2012 - 2023',
+                align: 'left'
+            },
+            subtitle: {
+                text: 'Fuente: <a href="https://www.inegi.org.mx/programas/cnple/2024/">FISEL</a>, <a href="https://siceen21.ine.mx/downloadzip">FEPADE</a>, <a href="https://siceen21.ine.mx/downloadzip">FEDE</a>',
+                align: 'left'
+            },
+            xAxis: {
+                categories: [
+                    '2018', '2019', '2020', '2012-2023'
+                ]
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: ''
+                }
+            },
+            legend: {
+                reversed: true
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            series: [{
+                name: 'Sanciones',
+                data: [0, 0, 0, 39]
+            },{
+                name: 'Denuncias',
+                data: [1369, 696, 520, 35345]
+            }]
+        });
+    </script>
+</body>
+</html>

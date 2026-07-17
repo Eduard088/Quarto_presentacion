@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico Highcharts - Temperatura Media Mensual</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/highcharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/exporting.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/export-data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/accessibility.js"></script>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--highcharts-background-color);
+            color: var(--highcharts-neutral-color-100);
+        }
+
+        #container {
+            height: 500px;
+            width: 100%;
+        }
+
+        .highcharts-figure,
+        .highcharts-data-table table {
+            min-width: 360px;
+            max-width: 800px;
+            margin: 1em auto;
+        }
+
+        .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid #e6e6e6;
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table td,
+        .highcharts-data-table th,
+        .highcharts-data-table caption {
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table thead tr,
+        .highcharts-data-table tbody tr:nth-child(even) {
+            background: #f7f7f7;
+        }
+    </style>
+</head>
+<body>
+
+    <figure class="highcharts-figure">
+        <div id="container"></div>
+    </figure>
+
+    <script>
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: '.'
+            }
+        });
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'Porcentaje acumulado de los cargos ocupados por los militantes partidistas y las candidatos independientes',
+                align: 'left'
+            },
+            subtitle: {
+                text: 'Fuente: <a href="https://siceen21.ine.mx/downloadzip">SICEEN</a>',
+                align: 'left'
+            },
+            xAxis: {
+                categories: [
+                    '2018', '2019', '2020', '2021', '2022', '2023'
+                ],
+                title: {
+                    text: 'Proceso electoral'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Porcentaje'
+                },
+                labels: {
+                    format: '{value} %' // Opcional: añade % al eje Y también
+                }
+            },
+            // CONFIGURACIÓN CORREGIDA DEL TOOLTIP
+            tooltip: {
+                shared: true, // Muestra ambas series al mismo tiempo al pasar el mouse
+                valueSuffix: ' %', // Añade el símbolo % en la ventana flotante
+                crosshairs: true
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{y} %' // Añade el símbolo % a los números sobre las líneas
+                    },
+                    // IMPORTANTE: Esto estaba en 'false', lo cambiamos a 'true' para permitir interacción
+                    enableMouseTracking: true 
+                }
+            },
+            series: [{
+                name: 'Militantes partidistas',
+                data: [
+                    44.28, 46, 48.51, 97.62, 98.66, 98.78
+                ]
+            }, {
+                name: 'Candidaturas independientes',
+                data: [
+                    0.67, 0.69, 0.75, 1.22, 1.22, 1.22
+                ]
+            }]
+        });
+    </script>
+
+</body>
+</html>

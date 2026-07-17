@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Diagrama conceptual de la tesis — Drilldown final</title>
+
+  <!-- Highcharts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/highcharts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/venn.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/exporting.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/accessibility.js"></script>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #ffffff;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial, sans-serif;
+      color: #111;
+    }
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px;
+    }
+    #container {
+      height: 550px;
+      margin: 0 auto;
+    }
+    /* Export button styling (opción B) */
+    .highcharts-contextbutton, .highcharts-button {
+      background: #f2f2f2 !important;
+      border: 1px solid #cccccc !important;
+      color: #333 !important;
+    }
+    /* Volver: botón discreto en la esquina superior izquierda del chart */
+    .btn-back {
+      position: absolute;
+      left: 24px;
+      top: 18px;
+      z-index: 1000;
+      background: #f5f5f5;
+      border: 1px solid #d0d0d0;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      display: none;
+      font-size: 13px;
+    }
+    .btn-back:hover { background: #eee; }
+    .info-box {
+      position: absolute;
+      top: 60px;
+      right: 24px;
+      background: #f0f7ff;
+      border-left: 4px solid #0066cc;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #333;
+      max-width: 280px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      line-height: 1.5;
+      display: none;
+      z-index: 999;
+    }
+    .info-box strong {
+      color: #0066cc;
+      display: block;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+    <div style="position:relative;">
+      <button id="btnBack" class="btn-back">← Volver</button>
+      <div id="container"></div>
+    </div>
+  </div>
+
+<script>
+(function(){
+
+  // Chart reference
+  let chart = null;
+  // Active floating labels so we can destroy them
+  let activeLabels = [];
+
+  // Destroy active labels
+  function clearLabels() {
+    if (!chart) return;
+    activeLabels.forEach(l => { try { l.destroy(); } catch(e) {} });
+    activeLabels = [];
+  }
+
+  // Add a floating label (callout)
+  function addLabel(text, x, y, w) {
+    if (!chart) return;
+    const ren = chart.renderer;
+    const lab = ren.label(text, x, y, 'callout', null, null, true)
+      .attr({ zIndex: 6 })
+      .css({
+        color: '#111',
+        fontSize: '13px',
+        width: (w || 240) + 'px',
+        lineHeight: '1.2em',
+        textAlign: 'left',
+        padding: '8px'
+      })
+      .add();
+    activeLabels.push(lab);
+    return lab;
+  }
+
+  // Prepare data sets
+
+  // MAIN: only the six primary elements
+  const mainSeries = [{
+    type: 'venn',
+    data: [
+      { sets: ['Objetivo General'], value: 14, name: 'Objetivo General', description: 'Explicar los factores que determinaron el desempeño de las adiciones de la reforma política de 2014 <br> en el sistema político mexicano durante el periodo 2015-2023.' },
+      { sets: ['Problema'], value: 10, name: 'Planteamiento del Problema', description: 'Situación, contexto o necesidad que motiva el estudio. Describes el vacío de conocimiento o la <br> problemática que justifica la investigación.' },
+      { sets: ['Pregunta'], value: 7, name: 'Pregunta de investigación', description: 'Interrogante central y específica que guía el estudio. Delimita claramente el alcance, <br> la población y el fenómeno a investigar.' },
+      { sets: ['Hipótesis'], value: 8, name: 'Hipótesis', description: 'Proposición que predice la relación entre variables. Se contrasta mediante la metodología y se acepta <br> o rechaza con los resultados.' },
+      { sets: ['Justificación'], value: 11, name: 'Justificación', description: 'Argumentos que demuestran la relevancia académica, social y práctica del estudio. Explica por <br> qué es importante y oportuno realizarlo.' },
+      { sets: ['Conceptos clave'], value: 9, name: 'Conceptos clave', description: 'Variables, constructos y elementos teóricos fundamentales que definen el estudio.' },
+
+      // a few small pairwise items to hint relations (but not clickable)
+      { sets: ['Problema', 'Pregunta'], value: 1.5, name: 'Relación: Problema↔Pregunta', description: 'Relación: El problema da origen a la pregunta de investigación' },
+      { sets: ['Objetivo General', 'Justificación'], value: 1.2, name: 'Relación: Objetivo↔Justificación', description: 'Relación: El objetivo se justifica en la relevancia de la investigación' }
+    ],
+    point: {
+      events: {
+        click: function () {
+          const pointName = this.name || (this.sets && this.sets[0]);
+          // Only allow drilldown when exact match to main elements
+          if (pointName === 'Objetivo General') {
+            showObjectivesDrill();
+          } else if (pointName === 'Hipótesis') {
+            showHypothesisDrill();
+          } else if (pointName === 'Justificación') {
+            showJustificationDrill();
+          } else if (pointName === 'Conceptos clave') {
+            showConceptsDrill();
+          } else if (pointName === 'Pregunta de investigación') {
+            showQuestionDrill();
+          } else {
+            // do nothing for pairwise hints or other non-drill points
+          }
+        }
+      }
+    }
+  }];
+
+  // OBJECTIVES drill: container circle + separated internal circles (no intersections)
+  const objectivesSeries = [{
+    type: 'venn',
+    data: [
+      // container
+      { sets: ['Objetivos específicos'], value: 16, name: 'Objetivos específicos', description: 'Desglose de las metas concretas que permiten comprobar la hipótesis y alcanzar el objetivo general.' },
+      // internal separated circles (values tuned so they stay inside/near)
+      { sets: ['OE2'], value: 3.2, name: 'OE2', description: 'Objetivo Específico 2:\n\nEntender los procesos que alejan a las democracias de sus objetivos ideales o teóricos, <br>en particular el caso del surgimiento de las partitocracias.' },
+      { sets: ['OE5'], value: 3.2, name: 'OE5', description: 'Objetivo Específico 5:\n\nEvaluar el desempeño de las adiciones de la reforma mediante indicadores cuantitativos y <br>los instrumentos teóricos presentados.' },
+      { sets: ['OE4'], value: 3.2, name: 'OE4', description: 'Objetivo Específico 4:\n\nExplicar las características de la reforma a partir de los instrumentos teóricos presentados.' },
+      { sets: ['OE1'], value: 3.2, name: 'OE1', description: 'Objetivo Específico 1:\n\nExplicar el funcionamiento de las democracias a partir de los arreglos formales e informales que las caracterizan.' },
+      { sets: ['OE3'], value: 3.2, name: 'OE3', description: 'Objetivo Específico 3:\n\nEntender los procesos históricos que configuraron el entorno político en el que se negoció y <br>aprobó la reforma a partir de los instrumentos teóricos presentados.' }
+    ]
+  }];
+
+  // CONCEPTS drill: container + internal separated circles
+  const conceptsSeries = [{
+    type: 'venn',
+    data: [
+      { sets: ['Conceptos clave'], value: 14, name: 'Conceptos clave', description: 'Variables, constructos y elementos teóricos fundamentales que operacionalizan el análisis. Estos definen qué se mide, cómo se entiende y por qué es importante.' },
+      { sets: ['Sistema político'], value: 3.6, name: 'Sistema político', description: 'Se emplearon las concepciones de Diether Nohlen centrado en las estructuras, los procesos y los contenidos del concepto.' },
+      { sets: ['Partido político'], value: 3.6, name: 'Partido político', description: 'Se emplearon los conceptos de partido político decimonónico y moderno en el análisis del sistema político.' },
+      { sets: ['Partitocracia'], value: 3.6, name: 'Partitocracia', description: 'Forma que puede adoptar el sistema político de un país' },
+      { sets: ['Democracia'], value: 3.6, name: 'Democracia representativa', description: 'Forma que puede adoptar el sistema político de un país.' }
+    ]
+  }];
+
+  // HYPOTHESIS drill: show hypothesis and related variables (with labels)
+  const hypothesisSeries = [{
+    type: 'venn',
+    data: [
+      { sets: ['Hipótesis'], value: 8, name: 'Hipótesis', description: 'Proposición predicente que define la relación esperada entre variables independientes y dependientes. Se contrasta y acepta o rechaza mediante análisis.' },
+      { sets: ['Variable dependiente'], value: 4, name: 'Variable dependiente', description: 'Resultado, efecto u outcome a medir. Es lo que se espera que cambie como resultado de la variable independiente.' },
+      { sets: ['Variable independiente'], value: 4, name: 'Variable independiente', description: 'Factor, causa o predictor que influye. Es el elemento que se manipula o analiza como causa de cambio.' },
+      { sets: ['Hipótesis', 'Variable dependiente'], value: 1, name: 'Hipótesis↔VD', description: 'Relación entre hipótesis y variable dependiente' },
+      { sets: ['Hipótesis', 'Variable independiente'], value: 1, name: 'Hipótesis↔VI', description: 'Relación entre hipótesis y variable independiente' }
+    ]
+  }];
+
+  // JUSTIFICATION drill: justification + impact/contribución
+  const justificationSeries = [{
+    type: 'venn',
+    data: [
+      { sets: ['Justificación'], value: 12, name: 'Justificación', description: 'Argumentación rigurosa de la relevancia académica, social y profesional del estudio. Explica por qué es necesario, oportuno e importante realizarlo.' },
+      { sets: ['Impacto práctico'], value: 4, name: 'Impacto práctico', description: 'Aplicaciones prácticas, utilidad y beneficios concretos esperados. Cómo los resultados pueden usarse en la práctica.' },
+      { sets: ['Contribución teórica'], value: 4, name: 'Contribución teórica', description: 'Avance en el conocimiento, nuevos conceptos o mejora en modelos existentes. Aporte a la teoría y el entendimiento.' },
+      { sets: ['Justificación', 'Impacto práctico'], value: 1, name: 'Justificación↔Impacto', description: 'Relación entre justificación e impacto práctico' }
+    ]
+  }];
+
+  // QUESTION drill: show scope and delimitations
+  const questionSeries = [{
+    type: 'venn',
+    data: [
+      { sets: ['Pregunta'], value: 7, name: 'Pregunta de investigación', description: 'Interrogante central, específica y acotada que orienta toda la investigación. Debe ser medible, contestable y alineada con el objetivo general.' },
+      { sets: ['Alcance'], value: 3.5, name: 'Alcance', description: 'Nivel de profundidad del estudio: Exploratorio (inicial), Descriptivo (características), Explicativo (causas) o Correlacional.' },
+      { sets: ['Delimitación'], value: 3.5, name: 'Delimitación', description: 'Limitaciones definidas: población específica, período temporal, geografía, y criterios de exclusión/inclusión.' }
+    ]
+  }];
+
+  // Helper to render main chart (initial view). Title static.
+  function renderMain() {
+    clearLabels();
+
+    const options = {
+      chart: { backgroundColor: '#ffffff' },
+      title: { text: 'Elementos protocolarios de la tesis', style: { color: '#000', fontSize: '20px' } },
+      subtitle: { text: null }, // no subtitle
+      series: mainSeries,
+      tooltip: {
+        headerFormat: '',
+        pointFormat: '<b>{point.name}</b><br/><br/>{point.description}'
+      },
+      plotOptions: {
+        venn: {
+          dataLabels: {
+            enabled: true,
+            style: { textOutline: '3px contrast', fontWeight: '700' }
+          }
+        },
+        series: {
+          cursor: 'pointer'
+        }
+      },
+      exporting: {
+        buttons: {
+          contextButton: {
+            symbolStroke: '#666',
+            theme: {
+              fill: '#f2f2f2',
+              stroke: '#cccccc'
+            }
+          }
+        }
+      }
+    };
+
+    if (!chart) {
+      chart = Highcharts.chart('container', options);
+    } else {
+      // Update only series & options but keep title intact
+      chart.update({
+        chart: options.chart,
+        series: options.series,
+        tooltip: options.tooltip,
+        plotOptions: options.plotOptions,
+        exporting: options.exporting,
+        subtitle: { text: null }
+      }, true, true);
+    }
+
+    // hide back button
+    document.getElementById('btnBack').style.display = 'none';
+  }
+
+  // Drilldown functions (simulate by updating series only; title stays the same)
+  function showObjectivesDrill() {
+    clearLabels();
+    chart.update({
+      series: objectivesSeries,
+      tooltip: {
+        headerFormat: '',
+        pointFormat: '<b>{point.name}</b><br/><br/>{point.description}'
+      },
+      plotOptions: {
+        venn: { dataLabels: { enabled: true, style: { textOutline: '3px contrast', fontWeight: '700' } } },
+        series: { cursor: 'default' }
+      },
+      subtitle: { text: null }
+    }, true, true);
+
+    // show back button
+    document.getElementById('btnBack').style.display = 'block';
+  }
+
+  function showConceptsDrill() {
+    clearLabels();
+    chart.update({
+      series: conceptsSeries,
+      tooltip: {
+        headerFormat: '',
+        pointFormat: '<b>{point.name}</b><br/><br/>{point.description}'
+      },
+      plotOptions: {
+        venn: { dataLabels: { enabled: true, style: { textOutline: '3px contrast', fontWeight: '700' } } },
+        series: { cursor: 'default' }
+      },
+      subtitle: { text: null }
+    }, true, true);
+
+    document.getElementById('btnBack').style.display = 'block';
+  }
+
+  function showHypothesisDrill() {
+    clearLabels();
+    chart.update({
+      series: hypothesisSeries,
+      tooltip: {
+        headerFormat: '',
+        pointFormat: '<b>{point.name}</b><br/><br/>{point.description}'
+      },
+      plotOptions: {
+        venn: { dataLabels: { enabled: true, style: { textOutline: '3px contrast', fontWeight: '700' } } },
+        series: { cursor: 'default' }
+      },
+      subtitle: { text: null }
+    }, true, true);
+
+    document.getElementById('btnBack').style.display = 'block';
+  }
+
+  function showJustificationDrill() {
+    clearLabels();
+    chart.update({
+      series: justificationSeries,
+      tooltip: {
+        headerFormat: '',
+        pointFormat: '<b>{point.name}</b><br/><br/>{point.description}'
+      },
+      plotOptions: {
+        venn: { dataLabels: { enabled: true, style: { textOutline: '3px contrast', fontWeight: '700' } } },
+        series: { cursor: 'default' }
+      },
+      subtitle: { text: null }
+    }, true, true);
+
+    document.getElementById('btnBack').style.display = 'block';
+  }
+
+  function showQuestionDrill() {
+    clearLabels();
+    chart.update({
+      series: questionSeries,
+      tooltip: {
+        headerFormat: '',
+        pointFormat: '<b>{point.name}</b><br/><br/>{point.description}'
+      },
+      plotOptions: {
+        venn: { dataLabels: { enabled: true, style: { textOutline: '3px contrast', fontWeight: '700' } } },
+        series: { cursor: 'default' }
+      },
+      subtitle: { text: null }
+    }, true, true);
+
+    document.getElementById('btnBack').style.display = 'block';
+  }
+
+  // Back button handler
+  document.getElementById('btnBack').addEventListener('click', function(){
+    renderMain();
+  });
+
+  // Listen to fullscreen changes to keep back button visible
+  document.addEventListener('fullscreenchange', function() {
+    const btnBack = document.getElementById('btnBack');
+    const chart = Highcharts.charts[0];
+    if (chart && chart.series && chart.series.length > 0) {
+      // If fullscreen is active and we're not on main view, show button
+      if (document.fullscreenElement && btnBack.style.display !== 'none') {
+        btnBack.style.display = 'block';
+      }
+    }
+  });
+
+  // Also listen to mozfullscreenchange for Firefox
+  document.addEventListener('mozfullscreenchange', function() {
+    const btnBack = document.getElementById('btnBack');
+    const chart = Highcharts.charts[0];
+    if (chart && chart.series && chart.series.length > 0) {
+      if (document.mozFullScreenElement && btnBack.style.display !== 'none') {
+        btnBack.style.display = 'block';
+      }
+    }
+  });
+
+  // Initial render
+  renderMain();
+
+  // Keep chart reference
+  (function waitChart(){
+    if (Highcharts.charts && Highcharts.charts.length && Highcharts.charts[0]) {
+      chart = Highcharts.charts[0];
+    } else {
+      setTimeout(waitChart, 50);
+    }
+  })();
+
+})();
+</script>
+
+</body>
+</html>

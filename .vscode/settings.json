@@ -1,0 +1,8 @@
+{
+    "terminal.integrated.suggest.insertTrailingSpace": true,
+    "terminal.integrated.suggest.providers": {
+        "lsp": true
+    },
+    "terminal.integrated.suggest.suggestOnTriggerCharacters": true,
+    "terminal.integrated.shellIntegration.environmentReporting": true
+}

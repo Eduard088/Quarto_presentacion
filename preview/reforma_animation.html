@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reforma política de 2014 - Animación</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+            background: transparent;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Círculo central con texto */
+        .center-circle {
+            position: absolute;
+            z-index: 10;
+            width: 250px;
+            height: 250px;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .center-text {
+            text-align: center;
+        }
+
+        .center-text h1 {
+            font-size: 2.2rem;
+            color: #333;
+            font-weight: 700;
+            line-height: 0.8;
+        }
+
+        .center-text p {
+            font-size: 1.8rem;
+            color: #333;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        /* Órbita visual */
+        .orbit {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 2px dashed rgba(100, 100, 100, 0.2);
+            border-radius: 50%;
+        }
+
+        /* Contenedor de rotación */
+        .orbit-container {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            animation: rotate 16s linear infinite;
+        }
+
+        /* Logo wrapper en la órbita */
+        .logo-wrapper {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 50%;
+            left: 50%;
+        }
+
+        .logo-wrapper:nth-child(1) {
+            transform: rotate(0deg) translateY(-240px);
+        }
+
+        .logo-wrapper:nth-child(2) {
+            transform: rotate(180deg) translateY(-140px);
+        }
+
+        .logo-wrapper:nth-child(3) {
+            transform: rotate(280deg) translateY(-250px);
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            padding: 5px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 95%;
+            height: 95%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Órbita visual -->
+        <div class="orbit"></div>
+
+        <!-- Círculo central con texto -->
+        <div class="center-circle">
+            <div class="center-text">
+                <h1>Reforma política</h1>
+                <p>2014</p>
+            </div>
+        </div>
+
+        <!-- Logos orbitando -->
+        <div class="orbit-container">
+            <div class="logo-wrapper">
+                <div class="logo">
+                    <img src="../images/PAN.png" alt="PAN">
+                </div>
+            </div>
+
+            <div class="logo-wrapper">
+                <div class="logo">
+                    <img src="../images/PRD.png" alt="PRD">
+                </div>
+            </div>
+
+            <div class="logo-wrapper">
+                <div class="logo">
+                    <img src="../images/PRI.png" alt="PRI">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

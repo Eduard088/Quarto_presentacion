@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Highcharts Box Plot Unificado</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/highcharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/highcharts-more.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/exporting.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/export-data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.4/modules/accessibility.js"></script>
+    
+    <style>
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                "Apple Color Emoji",
+                "Segoe UI Emoji",
+                "Segoe UI Symbol",
+                sans-serif;
+            background: var(--highcharts-background-color);
+            color: var(--highcharts-neutral-color-100);
+        }
+
+        #container {
+            height: 500px;
+            width: 100%;
+        }
+
+        .highcharts-figure,
+        .highcharts-data-table table {
+            min-width: 310px;
+            max-width: 700px;
+            margin: 1em auto;
+        }
+
+        .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid var(--highcharts-neutral-color-10, #e6e6e6);
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: var(--highcharts-neutral-color-60, #666);
+        }
+
+        .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table td,
+        .highcharts-data-table th,
+        .highcharts-data-table caption {
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table thead tr,
+        .highcharts-data-table tbody tr:nth-child(even) {
+            background: var(--highcharts-neutral-color-3, #f7f7f7);
+        }
+        
+        /* Se eliminó la clase .highcharts-description ya que se eliminó el párrafo */
+    </style>
+</head>
+<body>
+
+    <figure class="highcharts-figure">
+        <div id="container"></div>
+        </figure>
+
+    <script>
+
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: '.' 
+            }
+        });
+
+        Highcharts.chart('container', {
+
+            chart: {
+                type: 'boxplot'
+            },
+
+            title: {
+                text: 'Índice de NEP en los cargos de elección popular en México entre 2015 y 2023',
+                align: 'left'
+            },
+            subtitle: {
+                text: 'Fuente: <a href="https://www.inegi.org.mx/programas/cnple/2024/">INEGI</a>, <a href="https://siceen21.ine.mx/downloadzip">SICEEN</a>',
+                align: 'left'
+
+            },
+
+            legend: {
+                enabled: false
+            },
+
+            xAxis: {
+                categories: ['Ayuntamientos', 'Congresos locales', 'Gubernaturas', 'Diputaciones federales', 'Senadurías'],
+                title: {
+                    text: 'Cargo'
+                }
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Número de partidos'
+                },
+                plotLines: [{
+                    value: 3.5,
+                    color: 'red',
+                    width: 2,
+                    label: {
+                        text: 'Promedio: 3.79',
+                        align: 'right',
+                        x: 1,
+                        y: -20,
+                        style: {
+                            color: 'gray'
+                        }
+                    }
+                }]
+            },
+
+            series: [{
+                name: 'Valores:',
+                data: [
+                    [1, 2.61, 4.51, 5.68, 18.27],
+                    [1.10, 2.84, 3.52, 4, 6.06],
+                    [2, 2, 4.69, 4.5, 11.63],
+                    [1, 1, 1.64, 1.98, 3.57],
+                    [1.80, 1.80, 1.82, 1.80, 2.66]
+                ],
+                color: Highcharts.defaultOptions.colors[1]
+            }, {
+                name: 'Outliers',
+                color: Highcharts.defaultOptions.colors[1],
+                type: 'scatter',
+                data: [ // x, y positions where 0 is the first category
+                    [0, 3],
+                    [4, 2],
+                    [4, 2],
+                    [4, 2]
+                ],
+                marker: {
+                    fillColor: 'white',
+                    lineWidth: 1,
+                    lineColor: Highcharts.defaultOptions.colors[1]
+                },
+                tooltip: {
+                    pointFormat: 'Observation: {point.y}'
+                }
+            }]
+
+        });
+    </script>
+</body>
+</html>

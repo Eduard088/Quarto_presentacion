@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización Reforma 2014 - Slide Mode</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy-900': '#0a192f',
+                        'navy-800': '#112240',
+                        'sky-glow': '#38bdf8',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos generales ajustados para presentación */
+        body {
+            font-family: 'Roboto', sans-serif;
+            /* Fondo que coincide con Quarto: blanco a azul claro */
+            background: linear-gradient(135deg, #ffffff 0%, #dbeafe 100%); 
+            color: #1e293b;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; /* Evitar scroll en modo slide */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        #container {
+            height: 700px;
+            width: 100%;
+        }        
+
+        /* Contenedores más limpios, estilo limpio blanco */
+        .slide-panel {
+            background: rgba(255, 255, 255, 0.85); 
+            border-radius: 0.75rem;
+            /* Sombra suave para separar del fondo */
+            box-shadow: 0 4px 20px rgba(78, 90, 125, 0.1);
+            border: 1px solid rgba(219, 234, 254, 0.5);
+        }
+
+        /* Corrección del scroll de la tabla */
+        .table-container {
+            position: relative;
+            overflow-y: auto;
+            height: 100%;
+            scrollbar-width: thin;
+            scrollbar-color: #3b82f6 transparent;
+        }
+        
+        /* Ajuste del Sticky Header para que se funda mejor */
+        thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f8fafc; /* Gris muy claro */
+            z-index: 20;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            font-size: 0.75rem; /* Texto más compacto */
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        /* Switch más elegante */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #3b82f6;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #3b82f6;
+        }
+        
+        .row-hover:hover {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+
+        /* Fuente digital para datos */
+        .digital-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+    </style>
+</head>
+<body class="p-4 bg-gradient-to-br from-white to-blue-100">
+    
+    <!-- Contenedor Principal (Layout Slide) -->
+    <div class="w-full h-full max-w-[1400px] flex flex-row gap-6">
+        
+        <!-- SECCIÓN IZQUIERDA: Lista de Variables (Sin Título) -->
+        <div class="w-3/5 h-full slide-panel flex flex-col overflow-hidden">
+            <!-- Eliminado el encabezado "Variables de la Reforma" -->
+            
+            <div class="table-container p-0">
+                <table class="w-full text-left border-collapse">
+                    <thead class="text-sky-300 font-bold uppercase tracking-wider">
+                        <tr>
+                            <th class="p-3 border-b border-slate-700">Variable</th>
+                            <th class="p-3 border-b border-slate-700 w-1/2">Descripción</th>
+                            <th class="p-3 border-b border-slate-700 text-center">Activar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="grid-body" class="text-sm divide-y divide-slate-700/50">
+                        <!-- JS generará las filas -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DERECHA: Visualizaciones -->
+        <div class="w-2/5 h-full flex flex-col gap-4">
+            
+            <!-- Panel Superior: Velocímetro (Gauge) -->
+            <div class="h-3/5 slide-panel flex flex-col relative p-2">
+                <div class="absolute top-2 right-2 z-10 opacity-70">
+                   <span class="text-[10px] text-sky-400 border border-sky-500/30 px-2 py-1 rounded uppercase tracking-wider">Avance Global</span>
+                </div>
+                <!-- Controles de dimensión -->
+                <div class="absolute top-2 left-2 z-10 opacity-70 flex gap-2">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[8px] text-slate-600 uppercase">W</label>
+                        <input type="number" id="gauge-width" value="100" min="50" max="200" class="w-12 h-5 text-[10px] border border-slate-300 rounded px-1 bg-white">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[8px] text-slate-600 uppercase">H</label>
+                        <input type="number" id="gauge-height" value="100" min="50" max="200" class="w-12 h-5 text-[10px] border border-slate-300 rounded px-1 bg-white">
+                    </div>
+                </div>
+                <!-- Contenedor con padding extra para evitar recortes en 0 y 100 -->
+                <div id="gauge-container" class="w-full h-full" style="width: 100%; height: 100%;"></div>
+            </div>
+
+            <!-- Panel Inferior: Barras Temáticas -->
+            <div class="h-2/5 slide-panel flex flex-col relative p-4">
+                <div class="absolute top-2 right-2 z-10 opacity-70">
+                    <span class="text-[10px] text-indigo-300 border border-indigo-500/30 px-2 py-1 rounded uppercase tracking-wider">Por Eje</span>
+                 </div>
+                 <!-- Controles de dimensión -->
+                 <div class="absolute top-2 left-2 z-10 opacity-70 flex gap-2">
+                     <div class="flex flex-col gap-1">
+                         <label class="text-[8px] text-slate-600 uppercase">W</label>
+                         <input type="number" id="bar-width" value="100" min="50" max="200" class="w-12 h-5 text-[10px] border border-slate-300 rounded px-1 bg-white">
+                     </div>
+                     <div class="flex flex-col gap-1">
+                         <label class="text-[8px] text-slate-600 uppercase">H</label>
+                         <input type="number" id="bar-height" value="100" min="50" max="200" class="w-12 h-5 text-[10px] border border-slate-300 rounded px-1 bg-white">
+                     </div>
+                 </div>
+                <div id="bar-chart-container" class="w-full h-full mt-2" style="width: 100%; height: 100%;"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Scripts de Highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+
+    <script>
+        // --- 1. DATOS ---
+        const itemsReforma = [
+            { id: 1, category: 'VARI', title: "Adición 1", desc: "Deltos electorales.", active: false },
+            { id: 2, category: 'VARI', title: "Adición 2", desc: "Votaciones.", active: false },
+            { id: 3, category: 'VARI', title: "Indicador 1", desc: "Candidaturas independientes.", active: false },
+            { id: 4, category: 'VARI', title: "Indicador 2", desc: "Prerrogativas.", active: false },
+            { id: 5, category: 'VARI', title: "Indicador 3", desc: "Gasto Federalizado.", active: false },
+            { id: 6, category: 'VARI', title: "Indicador 4", desc: "Paridad de Género e índice de NEP.", active: false },
+            { id: 7, category: 'VARI', title: "Indicador 5", desc: "Cargos de militantes partidistas.", active: false }
+        ];
+
+        // Variable para almacenar el valor actual animado del gauge
+        let currentGaugeValue = 0;
+        let targetGaugeColor = '#1e3a8a';
+
+        // --- 2. GRID ---
+        const tbody = document.getElementById('grid-body');
+
+        function renderGrid() {
+            tbody.innerHTML = '';
+            itemsReforma.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'row-hover transition-colors group';
+                
+                let badgeColor = 'bg-slate-600';
+                if(item.category === 'VARI') badgeColor = 'bg-blue-600';
+                if(item.category === 'ELEC') badgeColor = 'bg-indigo-600';
+                if(item.category === 'PART') badgeColor = 'bg-sky-500';
+
+                tr.innerHTML = `
+                    <td class="p-3 font-medium text-slate-800">
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded flex items-center justify-center text-[9px] font-bold text-white shadow ${badgeColor}">${item.category}</span>
+                            <span>${item.title}</span>
+                        </div>
+                    </td>
+                    <td class="p-3 text-slate-600 text-xs leading-tight">${item.desc}</td>
+                    <td class="p-3 text-center">
+                        <div class="relative inline-block w-10 align-middle select-none">
+                            <input type="checkbox" id="toggle-${item.id}" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-2 appearance-none cursor-pointer transition-all duration-300 left-0" style="top: 0px;" ${item.active ? 'checked' : ''} onchange="toggleItem(${index})"/>
+                            <label for="toggle-${item.id}" class="toggle-label block overflow-hidden h-5 rounded-full bg-slate-400 cursor-pointer border border-slate-300"></label>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toggleItem(index) {
+            itemsReforma[index].active = !itemsReforma[index].active;
+            updateCharts();
+        }
+
+        // --- 3. ANIMACIÓN DE NÚMEROS ---
+        function animateValue(start, end, duration = 800, targetColor) {
+            targetGaugeColor = targetColor;
+            const range = end - start;
+            const frameCount = Math.ceil(duration / 16); // ~60fps
+            let currentFrame = 0;
+            
+            const timer = setInterval(() => {
+                currentFrame++;
+                // Interpolación lineal suave
+                const progress = currentFrame / frameCount;
+                currentGaugeValue = Math.round(start + (range * progress));
+                
+                // Actualizar solo el valor y del punto
+                const point = gaugeChart.series[0].points[0];
+                point.update(currentGaugeValue, false); // false para no redibujar después de cada frame
+                
+                // Actualizar color de la aguja
+                gaugeChart.series[0].update({
+                    dial: { backgroundColor: targetColor }
+                }, false);
+                
+                if (currentFrame >= frameCount) {
+                    currentGaugeValue = end; // Asegurar valor exacto
+                    point.update(end, true); // true para redibujar final
+                    clearInterval(timer);
+                } else {
+                    gaugeChart.redraw(false); // Redibujar sin animación
+                }
+            }, 16);
+        }
+
+        // --- 4. CHARTS ---
+        let gaugeChart;
+        let barChart;
+
+        function initCharts() {
+            Highcharts.setOptions({
+                chart: { style: { fontFamily: 'Roboto' } },
+                colors: ['#0ea5e9', '#6366f1', '#3b82f6', '#10b981']
+            });
+
+            // 4.1 GAUGE CORREGIDO
+            gaugeChart = Highcharts.chart('gauge-container', {
+                chart: {
+                    type: 'gauge',
+                    backgroundColor: 'transparent',
+                    // Aumentamos el espaciado para que no se corten las etiquetas de los extremos
+                    spacingTop: 10,
+                    spacingBottom: 10,
+                    spacingLeft: 20,
+                    spacingRight: 20
+                },
+                title: { text: null },
+                credits: { enabled: false },
+                pane: {
+                    startAngle: -140,
+                    endAngle: 140,
+                    background: null
+                },
+                yAxis: {
+                    min: 0,
+                    max: 100,
+                    tickWidth: 2,
+                    tickColor: '#334155',
+                    tickLength: 10,
+                    minorTickInterval: null,
+                    labels: {
+                        distance: 25, // Alejamos las etiquetas para que no se solapen con la aguja
+                        style: { color: '#1e3a8a', fontSize: '14px', fontWeight: 'bold' }
+                    },
+                    // Bandas base sutiles
+                    plotBands: [{
+                        from: 0, to: 100, color: 'rgba(255,255,255,0.05)', innerRadius: '80%', outerRadius: '100%'
+                    }]
+                },
+                series: [{
+                    name: 'Avance',
+                    data: [0],
+                    dataLabels: {
+                        format: '<div style="text-align:center"><span style="font-size:3rem;color:{point.color};font-family:\'Orbitron\';text-shadow: 0 0 10px rgba({point.color}, 0.3)">{y}</span><span style="font-size:1rem;color:#1e3a8a">%</span></div>',
+                        borderWidth: 0,
+                        useHTML: true,
+                        y: 80 // Bajamos un poco el número central
+                    },
+                    dial: {
+                        radius: '80%',
+                        backgroundColor: '#1e3a8a',
+                        baseWidth: 4,
+                        baseLength: '0%',
+                        rearLength: '0%'
+                    },
+                    pivot: { radius: 10, backgroundColor: '#1e3a8a' }
+                }]
+            });
+
+            // 4.2 BAR CHART
+            barChart = Highcharts.chart('bar-chart-container', {
+                chart: { type: 'bar', backgroundColor: 'transparent', height: '100%' },
+                title: { text: null },
+                credits: { enabled: false },
+                xAxis: {
+                    categories: ['Porcentaje', 'Electoral', 'Participación'],
+                    lineWidth: 0,
+                    labels: { style: { color: '#1e3a8a', fontSize: '11px' } }
+                },
+                yAxis: {
+                    min: 0, max: 100,
+                    title: { text: null },
+                    gridLineColor: 'rgba(255,255,255,0.05)',
+                    labels: { enabled: false }
+                },
+                legend: { enabled: false },
+                plotOptions: {
+                    series: { stacking: 'percent', borderWidth: 0, borderRadius: 2 }
+                },
+                series: [{
+                    name: 'Restante', color: 'rgba(255,255,255,0.05)', data: [100, 100, 100]
+                }, {
+                    name: 'Completado', color: '#0ea5e9', data: [0, 0, 0]
+                }]
+            });
+        }
+
+        function updateCharts() {
+            const totalScore = itemsReforma.reduce((acc, item) => acc + (item.active ? 14.3 : 0), 0);
+            
+            // Determinar color semáforo
+            let color;
+            if (totalScore <= 25) color = '#ef4444';       // Rojo
+            else if (totalScore <= 50) color = '#f97316';  // Naranja
+            else if (totalScore <= 75) color = '#eab308';  // Amarillo
+            else color = '#22c55e';                        // Verde
+
+            // Animar el valor desde el actual hasta el nuevo con color
+            animateValue(currentGaugeValue, totalScore, 800, color);
+            
+            // Actualizar banda activa (sin interferir con animación)
+            setTimeout(() => {
+                gaugeChart.yAxis[0].update({
+                    plotBands: [{
+                        from: 0, to: totalScore,
+                        color: {
+                            linearGradient: { x1: 0, y1: 0, x2: 1, y2: 0 },
+                            stops: [[0, Highcharts.color(color).setOpacity(0.1).get()], [1, color]]
+                        },
+                        innerRadius: '80%', outerRadius: '100%'
+                    }, {
+                        from: totalScore, to: 100,
+                        color: 'rgba(255,255,255,0.05)',
+                        innerRadius: '80%', outerRadius: '100%'
+                    }]
+                });
+            }, 50); // Pequeño delay para evitar conflicto
+
+            // Update Bars
+            const getCatProgress = (catCode, total) => {
+                const count = itemsReforma.filter(i => i.category === catCode && i.active).length;
+                return (count / total) * 100;
+            };
+            const vari = getCatProgress('VARI', 7);
+            const elec = getCatProgress('ELEC', 4);
+            const part = getCatProgress('PART', 3);
+
+            barChart.series[1].setData([
+                { y: vari, color: '#3b82f6' },
+                { y: elec, color: '#6366f1' },
+                { y: part, color: '#0ea5e9' }
+            ]);
+            barChart.series[0].setData([100-vari, 100-elec, 100-part]);
+        }
+
+        // Función para ajustar dimensiones del gráfico
+        function updateChartDimensions(chartType) {
+            if (chartType === 'gauge') {
+                const width = document.getElementById('gauge-width').value;
+                const height = document.getElementById('gauge-height').value;
+                const container = document.getElementById('gauge-container');
+                container.style.width = width + '%';
+                container.style.height = height + '%';
+
+                // Redibujar el gráfico gauge
+                if (gaugeChart) {
+                    setTimeout(() => {
+                        gaugeChart.reflow();
+                    }, 50);
+                }
+            } else if (chartType === 'bar') {
+                const width = document.getElementById('bar-width').value;
+                const height = document.getElementById('bar-height').value;
+                const container = document.getElementById('bar-chart-container');
+                container.style.width = width + '%';
+                container.style.height = height + '%';
+
+                // Redibujar el gráfico de barras
+                if (barChart) {
+                    setTimeout(() => {
+                        barChart.reflow();
+                    }, 50);
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGrid();
+            initCharts();
+            updateCharts();
+
+            // Configurar event listeners para los controles de dimensión
+            document.getElementById('gauge-width').addEventListener('input', () => updateChartDimensions('gauge'));
+            document.getElementById('gauge-height').addEventListener('input', () => updateChartDimensions('gauge'));
+            document.getElementById('bar-width').addEventListener('input', () => updateChartDimensions('bar'));
+            document.getElementById('bar-height').addEventListener('input', () => updateChartDimensions('bar'));
+        });
+    </script>
+</body>
+</html>

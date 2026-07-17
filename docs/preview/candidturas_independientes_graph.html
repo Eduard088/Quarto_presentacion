@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Candidaturas independientes en Mexico</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/highcharts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/annotations.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/exporting.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.4.1/modules/accessibility.js"></script>
+
+<style>
+@import url("https://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+
+body {
+    background: var(--highcharts-background-color);
+    color: var(--highcharts-neutral-color-100);
+}
+
+.highcharts-figure { margin: 0; }
+
+#play-controls {
+    max-width: 600px;
+    margin: 1em auto;
+}
+
+#container {
+    height: 450px;
+    max-width: 95%;
+}
+
+#play-pause-button {
+    margin-left: 10px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: 1px solid rgba(2, 117, 255, 1);
+    border-radius: 25px;
+    color: white;
+    background-color: rgba(2, 117, 255, 1);
+    transition: background-color 250ms;
+}
+
+#play-pause-button:hover {
+    background-color: rgba(2, 117, 255, 0.5);
+}
+
+#play-range {
+    transform: translateY(2.5px);
+    width: calc(100% - 90px);
+    background: #f8f8f8;
+}
+</style>
+</head>
+
+<body>
+
+<figure class="highcharts-figure">
+  <div id="parent-container">
+    <div id="play-controls">
+      <button id="play-pause-button" class="fa fa-play" title="play"></button>
+      <input id="play-range" type="range" value="2015" min="2015" max="2023" />
+    </div>
+    <div id="container"></div>
+  </div>
+</figure>
+
+<script>
+
+Highcharts.setOptions({
+    lang: {
+        thousandsSep: ','   // <-- evita “10.000”, “11.000”, etc.
+    }
+});
+
+const dataset = {
+    MORENA: {
+        2015: 1289, 2016: 741, 2017: 92, 2018: 2146,
+        2019: 113, 2020: 89, 2021: 2490, 2022: 54,
+        2023: 16
+    },
+    PT: {
+        2015: 1229, 2016: 695, 2017: 92, 2018: 2123,
+        2019: 98, 2020: 89, 2021: 2321, 2022: 54,
+        2023: 16
+    },
+    MC: {
+        2015: 1293, 2016: 641, 2017: 92, 2018: 2039,
+        2019: 91, 2020: 72, 2021: 2322, 2022: 38,
+        2023: 16
+    },
+    PVEM: {
+        2015: 1296, 2016: 680, 2017: 92, 2018: 1902,
+        2019: 93, 2020: 81, 2021: 2367, 2022: 54,
+        2023: 16
+    },
+    PRD: {
+        2015: 1281, 2016: 684, 2017: 92, 2018: 1996,
+        2019: 104, 2020: 91, 2021: 2329, 2022: 51,
+        2023: 16
+    },
+    PRI: {
+        2015: 1368, 2016: 677, 2017: 92, 2018: 2121,
+        2019: 113, 2020: 98, 2021: 2469, 2022: 54,
+        2023: 16
+    },
+    PAN: {
+        2015: 1354, 2016: 721, 2017: 92, 2018: 2063,
+        2019: 111, 2020: 94, 2021: 2459, 2022: 54,
+        2023: 16
+    },
+    PES: {
+        2015: 1200, 2016: 470, 2017: 92, 2018: 2020,
+        2019: 5, 2020: 0, 2021: 0, 2022: 0,
+        2023: 0
+    },
+    NUAL: {
+        2015: 1283, 2016: 473, 2017: 92, 2018: 1851,
+        2019: 1, 2020: 82, 2021: 3, 2022: 0,
+        2023: 0
+    },
+    PAN_PRD: {
+        2015: 37, 2016: 330, 2017: 38, 2018: 1204,
+        2019: 50, 2020: 27, 2021: 1332, 2022: 42,
+        2023: 16
+    },
+    Otro: {
+        2015: 10440, 2016: 2998, 2017: 5916, 2018: 16813,
+        2019: 549, 2020: 531, 2021: 41883, 2022: 792,
+        2023: 80
+    },
+    CI: {
+        2015: 97, 2016: 267, 2017: 75, 2018: 539,
+        2019: 20, 2020: 34, 2021: 278, 2022: 2,
+        2023: 0
+    }
+};
+
+/* -------------------------
+   CONFIGURACIÓN DEL GRÁFICO
+--------------------------*/
+const startYear = 2015;
+const endYear = 2023;
+const btn = document.getElementById('play-pause-button');
+const input = document.getElementById('play-range');
+
+let chart;
+
+// Función para calcular datos acumulados desde 2015 hasta el año indicado
+function getData(year) {
+    return Object.entries(dataset).map(([country, data]) => {
+        let accumulated = 0;
+        // Sumar todos los valores desde 2015 hasta el año actual
+        for (let y = startYear; y <= year; y++) {
+            accumulated += data[y] || 0;
+        }
+        return [country, accumulated];
+    });
+}
+
+function getSubtitle() {
+    const total = getData(input.value)
+        .map(row => row[1])
+        .reduce((a, b) => a + b, 0)
+        .toFixed(0);
+
+    return `<span style="font-size: 80px">${input.value}</span>
+            <br>
+            <span style="font-size: 22px">Total: <b>${total.toLocaleString()}</b> candidaturas</span>`;
+}
+
+chart = Highcharts.chart('container', {
+    title: {
+        text: 'Cantidad acumulada de postulaciones por agrupación política entre 2015 y 2023',
+        align: 'center'
+    },
+    subtitle: {
+        text: getSubtitle(),
+        floating: true,
+        useHTML: true,
+        verticalAlign: 'middle',
+        y: 30
+    },
+
+    legend: { enabled: false },
+
+    tooltip: {
+        valueDecimals: 0,
+        valueSuffix: ' candidaturas',
+        pointFormat: '<b>{point.name}</b>: {point.y:,.0f} candidaturas acumuladas'
+    },
+
+    plotOptions: {
+        series: {
+            borderWidth: 0,
+            colorByPoint: true,
+            type: 'pie',
+            size: '100%',
+            innerSize: '80%',
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                distance: '-10%',
+                style: {
+                    fontWeight: 'bold',
+                    fontSize: '16px'
+                },
+                connectorWidth: 0,
+                format: '{point.name}'
+            }
+        }
+    },
+
+    colors: ['#800040', '#FF0000', '#FF8000', '#00FF99', '#FFE100', '#48FF00', '#006AFF', '#8400FF', '#00FFFF', '#FF5EAF', '#4769BA', '#5ED7FF'],
+
+    series: [
+        {
+            type: 'pie',
+            name: startYear,
+            data: getData(startYear)
+        }
+    ]
+});
+
+/* -------------------------
+   CONTROLES PLAY / PAUSE
+--------------------------*/
+function pause(button) {
+    button.title = 'play';
+    button.className = 'fa fa-play';
+    clearInterval(chart.sequenceTimer);
+    chart.sequenceTimer = undefined;
+}
+
+function update(increment) {
+    if (increment !== undefined && increment !== null) {
+        input.value = parseInt(input.value) + increment;
+    }
+
+    const year = parseInt(input.value);
+    
+    if (year >= endYear) {
+        pause(btn);
+        input.value = endYear;
+    }
+    
+    if (year <= startYear) {
+        input.value = startYear;
+    }
+
+    chart.update({ subtitle: { text: getSubtitle() } }, false);
+
+    chart.series[0].update({
+        name: input.value,
+        data: getData(input.value)
+    });
+}
+
+function play(button) {
+    button.title = 'pause';
+    button.className = 'fa fa-pause';
+    chart.sequenceTimer = setInterval(() => update(1), 500);
+}
+
+btn.addEventListener('click', () => {
+    if (chart.sequenceTimer) pause(btn);
+    else play(btn);
+});
+
+input.addEventListener('input', () => {
+    pause(btn);
+    update();
+});
+</script>
+
+</body>
+</html>
